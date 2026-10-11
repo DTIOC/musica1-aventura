@@ -231,3 +231,74 @@ h1 {
   margin: 20px 0;
   min-height: 150px;
 }
+/* Avatar animado */
+.avatar-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="30" r="20" fill="%23fbbf24"/><rect x="30" y="50" width="40" height="40" fill="%23e94560" rx="5"/><circle cx="40" cy="28" r="3" fill="%231a1a2e"/><circle cx="60" cy="28" r="3" fill="%231a1a2e"/><path d="M 42 35 Q 50 40 58 35" stroke="%231a1a2e" stroke-width="2" fill="none"/></svg>') no-repeat center;
+  background-size: contain;
+  transition: transform 0.3s;
+  animation: idle 2s ease-in-out infinite;
+}
+
+@keyframes idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.avatar.happy {
+  animation: jump 0.6s ease;
+}
+
+@keyframes jump {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-30px) rotate(-10deg); }
+  50% { transform: translateY(-30px) rotate(10deg); }
+  75% { transform: translateY(-15px) rotate(-5deg); }
+}
+
+.avatar.sad {
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px) rotate(-5deg); }
+  75% { transform: translateX(10px) rotate(5deg); }
+}
+
+.avatar-bubble {
+  position: absolute;
+  bottom: 90px;
+  left: 0;
+  background: white;
+  color: #1a1a2e;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  max-width: 200px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.avatar-bubble.show {
+  opacity: 1;
+}
+
+.avatar-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 30px;
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: white transparent;
+}
