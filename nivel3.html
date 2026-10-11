@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nivel 3 - Biblioteca de Códigos</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
+  
+  <div class="nivel-contenido">
+    <h1> Nivel 3: La Biblioteca de los Códigos Antiguos</h1>
+    <p>Descifra los símbolos musicales para abrir las puertas secretas.</p>
+    
+    <!-- Pregunta 1 -->
+    <div class="pregunta">
+      <strong>Pregunta 1:</strong> ¿Qué símbolo musical se utiliza para escribir las notas y tiene 5 líneas horizontales?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 1)">Clave de Sol</button>
+      <button class="opcion" onclick="verificar(this, true, 1)">Pentagrama</button>
+      <button class="opcion" onclick="verificar(this, false, 1)">Compás</button>
+    </div>
+    <div id="mensaje1" class="mensaje"></div>
+
+    <!-- Pregunta 2 -->
+    <div class="pregunta">
+      <strong>Pregunta 2:</strong> ¿Qué indica el símbolo <b>crescendo</b> (&lt;)?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 2)">Disminuir la intensidad</button>
+      <button class="opcion" onclick="verificar(this, true, 2)">Aumentar la intensidad gradualmente</button>
+      <button class="opcion" onclick="verificar(this, false, 2)">Tocar muy suave</button>
+    </div>
+    <div id="mensaje2" class="mensaje"></div>
+
+    <!-- Pregunta 3 -->
+    <div class="pregunta">
+      <strong>Pregunta 3:</strong> La indicación <b>4/4</b> al inicio de una partitura nos indica:
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, true, 3)">El compás: 4 tiempos por compás, la negra vale 1 tiempo</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Que hay 4 notas en total</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">La velocidad de la canción</button>
+    </div>
+    <div id="mensaje3" class="mensaje"></div>
+
+    <div class="botones">
+      <a href="index.html" class="btn btn-volver">← Volver al menú</a>
+      <a href="nivel4.html" class="btn btn-siguiente">Siguiente nivel →</a>
+    </div>
+  </div>
+
+  <script>
+    let puntos = 0;
+    const respondidas = {1: false, 2: false, 3: false};
+
+    function verificar(boton, esCorrecta, numPregunta) {
+      if (respondidas[numPregunta]) return;
+      respondidas[numPregunta] = true;
+
+      const mensaje = document.getElementById('mensaje' + numPregunta);
+      const opciones = boton.parentElement.querySelectorAll('.opcion');
+      opciones.forEach(op => op.disabled = true);
+
+      if (esCorrecta) {
+        boton.classList.add('correcta');
+        mensaje.className = 'mensaje exito';
+        mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
+        puntos += 10;
+      } else {
+        boton.classList.add('incorrecta');
+        mensaje.className = 'mensaje error';
+        mensaje.innerHTML = '❌ Incorrecto.';
+        opciones.forEach(op => {
+          if (op.getAttribute('onclick').includes('true')) {
+            op.classList.add('correcta');
+          }
+        });
+      }
+      document.getElementById('puntos').textContent = puntos;
+    }
+  </script>
+</body>
+</html>
