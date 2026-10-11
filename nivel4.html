@@ -8,8 +8,13 @@
 <body>
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
   
+  <div class="avatar-container">
+    <div class="avatar-bubble" id="avatar-bubble">¡Vamos!</div>
+    <div class="avatar" id="avatar"></div>
+  </div>
+  
   <div class="nivel-contenido">
-    <h1>️ Nivel 4: El Abismo de las Distancias</h1>
+    <h1>🕳️ Nivel 4: El Abismo de las Distancias</h1>
     <p>Para cruzar el abismo debes identificar correctamente los intervalos entre notas.</p>
     
     <div class="pregunta">
@@ -49,7 +54,6 @@
   </div>
 
   <script>
-    // CAMBIO A: Cargar puntos guardados
     let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
     document.getElementById('puntos').textContent = puntos;
     const respondidas = {1: false, 2: false, 3: false};
@@ -60,6 +64,8 @@
 
       const mensaje = document.getElementById('mensaje' + numPregunta);
       const opciones = boton.parentElement.querySelectorAll('.opcion');
+      const avatar = document.getElementById('avatar');
+      const bubble = document.getElementById('avatar-bubble');
       opciones.forEach(op => op.disabled = true);
 
       if (esCorrecta) {
@@ -67,17 +73,24 @@
         mensaje.className = 'mensaje exito';
         mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
         puntos += 10;
-        // CAMBIO B: Guardar puntos automáticamente
         localStorage.setItem('puntosMusica1', puntos);
+        
+        avatar.classList.add('happy');
+        bubble.textContent = '¡Excelente! 🎉';
+        bubble.classList.add('show');
+        setTimeout(() => { avatar.classList.remove('happy'); bubble.classList.remove('show'); }, 2000);
       } else {
         boton.classList.add('incorrecta');
         mensaje.className = 'mensaje error';
-        mensaje.innerHTML = '❌ Incorrecto. Cuenta las notas desde la primera hasta la segunda (incluyéndolas).';
+        mensaje.innerHTML = '❌ Incorrecto. ¡No te rindas!';
         opciones.forEach(op => {
-          if (op.getAttribute('onclick').includes('true')) {
-            op.classList.add('correcta');
-          }
+          if (op.getAttribute('onclick').includes('true')) op.classList.add('correcta');
         });
+        
+        avatar.classList.add('sad');
+        bubble.textContent = '¡Inténtalo de nuevo! 💪';
+        bubble.classList.add('show');
+        setTimeout(() => { avatar.classList.remove('sad'); bubble.classList.remove('show'); }, 2000);
       }
       document.getElementById('puntos').textContent = puntos;
     }
