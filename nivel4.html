@@ -12,7 +12,6 @@
     <h1>️ Nivel 4: El Abismo de las Distancias</h1>
     <p>Para cruzar el abismo debes identificar correctamente los intervalos entre notas.</p>
     
-    <!-- Pregunta 1 -->
     <div class="pregunta">
       <strong>Pregunta 1:</strong> ¿Qué intervalo hay entre <b>Do</b> y <b>Mi</b>?
     </div>
@@ -23,7 +22,6 @@
     </div>
     <div id="mensaje1" class="mensaje"></div>
 
-    <!-- Pregunta 2 -->
     <div class="pregunta">
       <strong>Pregunta 2:</strong> ¿Qué intervalo hay entre <b>Do</b> y <b>Sol</b>?
     </div>
@@ -34,7 +32,6 @@
     </div>
     <div id="mensaje2" class="mensaje"></div>
 
-    <!-- Pregunta 3 -->
     <div class="pregunta">
       <strong>Pregunta 3:</strong> ¿Qué intervalo hay entre <b>Do</b> y <b>Do'</b> (el mismo nombre, octava superior)?
     </div>
@@ -52,7 +49,9 @@
   </div>
 
   <script>
-    let puntos = 0;
+    // CAMBIO A: Cargar puntos guardados
+    let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
+    document.getElementById('puntos').textContent = puntos;
     const respondidas = {1: false, 2: false, 3: false};
 
     function verificar(boton, esCorrecta, numPregunta) {
@@ -68,6 +67,8 @@
         mensaje.className = 'mensaje exito';
         mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
         puntos += 10;
+        // CAMBIO B: Guardar puntos automáticamente
+        localStorage.setItem('puntosMusica1', puntos);
       } else {
         boton.classList.add('incorrecta');
         mensaje.className = 'mensaje error';
