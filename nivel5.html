@@ -9,10 +9,9 @@
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
   
   <div class="nivel-contenido">
-    <h1>🐍 Nivel 5: La Serpiente Laberíntica</h1>
+    <h1> Nivel 5: La Serpiente Laberíntica</h1>
     <p>Sigue el rastro de la serpiente musical. Identifica si se mueve por <b>grado conjunto</b> (notas vecinas) o por <b>salto</b> (notas lejanas).</p>
     
-    <!-- Pregunta 1 -->
     <div class="pregunta">
       <strong>Pregunta 1:</strong> Si una melodía va de <b>Do → Re → Mi → Fa</b>, ¿qué tipo de movimiento es?
     </div>
@@ -23,7 +22,6 @@
     </div>
     <div id="mensaje1" class="mensaje"></div>
 
-    <!-- Pregunta 2 -->
     <div class="pregunta">
       <strong>Pregunta 2:</strong> Si una melodía va de <b>Do → Sol</b>, ¿qué tipo de movimiento es?
     </div>
@@ -34,7 +32,6 @@
     </div>
     <div id="mensaje2" class="mensaje"></div>
 
-    <!-- Pregunta 3 -->
     <div class="pregunta">
       <strong>Pregunta 3:</strong> Según la regla de oro de la composición: después de un <b>salto ascendente</b>, la siguiente nota debe...
     </div>
@@ -52,7 +49,9 @@
   </div>
 
   <script>
-    let puntos = 0;
+    // CAMBIO A: Cargar puntos guardados
+    let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
+    document.getElementById('puntos').textContent = puntos;
     const respondidas = {1: false, 2: false, 3: false};
 
     function verificar(boton, esCorrecta, numPregunta) {
@@ -68,6 +67,8 @@
         mensaje.className = 'mensaje exito';
         mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
         puntos += 10;
+        // CAMBIO B: Guardar puntos automáticamente
+        localStorage.setItem('puntosMusica1', puntos);
       } else {
         boton.classList.add('incorrecta');
         mensaje.className = 'mensaje error';
