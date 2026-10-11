@@ -9,10 +9,9 @@
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
   
   <div class="nivel-contenido">
-    <h1>🏰 Nivel 2: Las 4 Torres de los Guardianes</h1>
+    <h1> Nivel 2: Las 4 Torres de los Guardianes</h1>
     <p>Debes conocer las propiedades del sonido para pasar a los guardianes: <b>Tono, Intensidad, Timbre y Duración</b>.</p>
     
-    <!-- Pregunta 1 -->
     <div class="pregunta">
       <strong>Pregunta 1:</strong> ¿Qué propiedad del sonido nos permite distinguir si una nota es aguda o grave?
     </div>
@@ -23,7 +22,6 @@
     </div>
     <div id="mensaje1" class="mensaje"></div>
 
-    <!-- Pregunta 2 -->
     <div class="pregunta">
       <strong>Pregunta 2:</strong> ¿Cuál símbolo indica que la música debe sonar <b>muy fuerte</b>?
     </div>
@@ -34,7 +32,6 @@
     </div>
     <div id="mensaje2" class="mensaje"></div>
 
-    <!-- Pregunta 3 -->
     <div class="pregunta">
       <strong>Pregunta 3:</strong> ¿Qué propiedad nos permite distinguir una flauta de un violín aunque toquen la misma nota?
     </div>
@@ -52,7 +49,9 @@
   </div>
 
   <script>
-    let puntos = 0;
+    // CAMBIO A: Cargar puntos guardados
+    let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
+    document.getElementById('puntos').textContent = puntos;
     const respondidas = {1: false, 2: false, 3: false};
 
     function verificar(boton, esCorrecta, numPregunta) {
@@ -68,6 +67,8 @@
         mensaje.className = 'mensaje exito';
         mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
         puntos += 10;
+        // CAMBIO B: Guardar puntos automáticamente
+        localStorage.setItem('puntosMusica1', puntos);
       } else {
         boton.classList.add('incorrecta');
         mensaje.className = 'mensaje error';
