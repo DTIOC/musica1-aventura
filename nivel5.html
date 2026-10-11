@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nivel 5 - La Serpiente Laberíntica</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
+  
+  <div class="nivel-contenido">
+    <h1>🐍 Nivel 5: La Serpiente Laberíntica</h1>
+    <p>Sigue el rastro de la serpiente musical. Identifica si se mueve por <b>grado conjunto</b> (notas vecinas) o por <b>salto</b> (notas lejanas).</p>
+    
+    <!-- Pregunta 1 -->
+    <div class="pregunta">
+      <strong>Pregunta 1:</strong> Si una melodía va de <b>Do → Re → Mi → Fa</b>, ¿qué tipo de movimiento es?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, true, 1)">Grado conjunto (notas vecinas)</button>
+      <button class="opcion" onclick="verificar(this, false, 1)">Salto</button>
+      <button class="opcion" onclick="verificar(this, false, 1)">Repetición</button>
+    </div>
+    <div id="mensaje1" class="mensaje"></div>
+
+    <!-- Pregunta 2 -->
+    <div class="pregunta">
+      <strong>Pregunta 2:</strong> Si una melodía va de <b>Do → Sol</b>, ¿qué tipo de movimiento es?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 2)">Grado conjunto</button>
+      <button class="opcion" onclick="verificar(this, true, 2)">Salto</button>
+      <button class="opcion" onclick="verificar(this, false, 2)">Unísono</button>
+    </div>
+    <div id="mensaje2" class="mensaje"></div>
+
+    <!-- Pregunta 3 -->
+    <div class="pregunta">
+      <strong>Pregunta 3:</strong> Según la regla de oro de la composición: después de un <b>salto ascendente</b>, la siguiente nota debe...
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 3)">Seguir subiendo por salto</button>
+      <button class="opcion" onclick="verificar(this, true, 3)">Bajar por grado conjunto (sentido inverso)</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Repetir la misma nota</button>
+    </div>
+    <div id="mensaje3" class="mensaje"></div>
+
+    <div class="botones">
+      <a href="index.html" class="btn btn-volver">← Volver al menú</a>
+      <a href="nivel6.html" class="btn btn-siguiente">Siguiente nivel (Jefe Final) →</a>
+    </div>
+  </div>
+
+  <script>
+    let puntos = 0;
+    const respondidas = {1: false, 2: false, 3: false};
+
+    function verificar(boton, esCorrecta, numPregunta) {
+      if (respondidas[numPregunta]) return;
+      respondidas[numPregunta] = true;
+
+      const mensaje = document.getElementById('mensaje' + numPregunta);
+      const opciones = boton.parentElement.querySelectorAll('.opcion');
+      opciones.forEach(op => op.disabled = true);
+
+      if (esCorrecta) {
+        boton.classList.add('correcta');
+        mensaje.className = 'mensaje exito';
+        mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
+        puntos += 10;
+      } else {
+        boton.classList.add('incorrecta');
+        mensaje.className = 'mensaje error';
+        mensaje.innerHTML = '❌ Incorrecto. Recuerda: los saltos deben "aterrizarse" con grado conjunto en dirección contraria.';
+        opciones.forEach(op => {
+          if (op.getAttribute('onclick').includes('true')) {
+            op.classList.add('correcta');
+          }
+        });
+      }
+      document.getElementById('puntos').textContent = puntos;
+    }
+  </script>
+</body>
+</html>
