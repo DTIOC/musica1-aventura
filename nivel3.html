@@ -9,7 +9,7 @@
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
   
   <div class="nivel-contenido">
-    <h1> Nivel 3: La Biblioteca de los Códigos Antiguos</h1>
+    <h1>📚 Nivel 3: La Biblioteca de los Códigos Antiguos</h1>
     <p>Descifra los símbolos musicales para abrir las puertas secretas.</p>
     
     <!-- Pregunta 1 -->
@@ -34,12 +34,13 @@
     </div>
     <div id="mensaje2" class="mensaje"></div>
 
-    <!-- Pregunta 3 -->
+    <!-- Pregunta 3 (CORREGIDA) -->
     <div class="pregunta">
       <strong>Pregunta 3:</strong> La indicación <b>4/4</b> al inicio de una partitura nos indica:
     </div>
     <div class="opciones">
-<button class="opcion" onclick="verificar(this, true, 3)">El compás: 4 tiempos por compás, el cuarto dura un tiempo</button>      <button class="opcion" onclick="verificar(this, false, 3)">Que hay 4 notas en total</button>
+      <button class="opcion" onclick="verificar(this, true, 3)">El compás: 4 tiempos por compás, el cuarto dura un tiempo</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Que hay 4 notas en total</button>
       <button class="opcion" onclick="verificar(this, false, 3)">La velocidad de la canción</button>
     </div>
     <div id="mensaje3" class="mensaje"></div>
@@ -51,7 +52,9 @@
   </div>
 
   <script>
-    let puntos = 0;
+    // CAMBIO A: Cargar puntos guardados automáticamente
+    let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
+    document.getElementById('puntos').textContent = puntos;
     const respondidas = {1: false, 2: false, 3: false};
 
     function verificar(boton, esCorrecta, numPregunta) {
@@ -67,10 +70,12 @@
         mensaje.className = 'mensaje exito';
         mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
         puntos += 10;
+        // CAMBIO B: Guardar puntos automáticamente
+        localStorage.setItem('puntosMusica1', puntos);
       } else {
         boton.classList.add('incorrecta');
         mensaje.className = 'mensaje error';
-        mensaje.innerHTML = '❌ Incorrecto.';
+        mensaje.innerHTML = '❌ Incorrecto. Revisa el tema e intenta en la próxima.';
         opciones.forEach(op => {
           if (op.getAttribute('onclick').includes('true')) {
             op.classList.add('correcta');
