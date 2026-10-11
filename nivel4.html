@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nivel 4 - El Abismo de las Distancias</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
+  
+  <div class="nivel-contenido">
+    <h1>️ Nivel 4: El Abismo de las Distancias</h1>
+    <p>Para cruzar el abismo debes identificar correctamente los intervalos entre notas.</p>
+    
+    <!-- Pregunta 1 -->
+    <div class="pregunta">
+      <strong>Pregunta 1:</strong> ¿Qué intervalo hay entre <b>Do</b> y <b>Mi</b>?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 1)">Segunda</button>
+      <button class="opcion" onclick="verificar(this, true, 1)">Tercera</button>
+      <button class="opcion" onclick="verificar(this, false, 1)">Quinta</button>
+    </div>
+    <div id="mensaje1" class="mensaje"></div>
+
+    <!-- Pregunta 2 -->
+    <div class="pregunta">
+      <strong>Pregunta 2:</strong> ¿Qué intervalo hay entre <b>Do</b> y <b>Sol</b>?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 2)">Cuarta</button>
+      <button class="opcion" onclick="verificar(this, true, 2)">Quinta</button>
+      <button class="opcion" onclick="verificar(this, false, 2)">Octava</button>
+    </div>
+    <div id="mensaje2" class="mensaje"></div>
+
+    <!-- Pregunta 3 -->
+    <div class="pregunta">
+      <strong>Pregunta 3:</strong> ¿Qué intervalo hay entre <b>Do</b> y <b>Do'</b> (el mismo nombre, octava superior)?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 3)">Séptima</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Sexta</button>
+      <button class="opcion" onclick="verificar(this, true, 3)">Octava</button>
+    </div>
+    <div id="mensaje3" class="mensaje"></div>
+
+    <div class="botones">
+      <a href="index.html" class="btn btn-volver">← Volver al menú</a>
+      <a href="nivel5.html" class="btn btn-siguiente">Siguiente nivel →</a>
+    </div>
+  </div>
+
+  <script>
+    let puntos = 0;
+    const respondidas = {1: false, 2: false, 3: false};
+
+    function verificar(boton, esCorrecta, numPregunta) {
+      if (respondidas[numPregunta]) return;
+      respondidas[numPregunta] = true;
+
+      const mensaje = document.getElementById('mensaje' + numPregunta);
+      const opciones = boton.parentElement.querySelectorAll('.opcion');
+      opciones.forEach(op => op.disabled = true);
+
+      if (esCorrecta) {
+        boton.classList.add('correcta');
+        mensaje.className = 'mensaje exito';
+        mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
+        puntos += 10;
+      } else {
+        boton.classList.add('incorrecta');
+        mensaje.className = 'mensaje error';
+        mensaje.innerHTML = '❌ Incorrecto. Cuenta las notas desde la primera hasta la segunda (incluyéndolas).';
+        opciones.forEach(op => {
+          if (op.getAttribute('onclick').includes('true')) {
+            op.classList.add('correcta');
+          }
+        });
+      }
+      document.getElementById('puntos').textContent = puntos;
+    }
+  </script>
+</body>
+</html>
