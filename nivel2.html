@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nivel 2 - Las 4 Torres</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
+  
+  <div class="nivel-contenido">
+    <h1>🏰 Nivel 2: Las 4 Torres de los Guardianes</h1>
+    <p>Debes conocer las propiedades del sonido para pasar a los guardianes: <b>Tono, Intensidad, Timbre y Duración</b>.</p>
+    
+    <!-- Pregunta 1 -->
+    <div class="pregunta">
+      <strong>Pregunta 1:</strong> ¿Qué propiedad del sonido nos permite distinguir si una nota es aguda o grave?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 1)">Intensidad</button>
+      <button class="opcion" onclick="verificar(this, true, 1)">Tono (Altura)</button>
+      <button class="opcion" onclick="verificar(this, false, 1)">Timbre</button>
+    </div>
+    <div id="mensaje1" class="mensaje"></div>
+
+    <!-- Pregunta 2 -->
+    <div class="pregunta">
+      <strong>Pregunta 2:</strong> ¿Cuál símbolo indica que la música debe sonar <b>muy fuerte</b>?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 2)">pp (pianissimo)</button>
+      <button class="opcion" onclick="verificar(this, false, 2)">mf (mezzo forte)</button>
+      <button class="opcion" onclick="verificar(this, true, 2)">ff (fortissimo)</button>
+    </div>
+    <div id="mensaje2" class="mensaje"></div>
+
+    <!-- Pregunta 3 -->
+    <div class="pregunta">
+      <strong>Pregunta 3:</strong> ¿Qué propiedad nos permite distinguir una flauta de un violín aunque toquen la misma nota?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, true, 3)">Timbre</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Duración</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Tono</button>
+    </div>
+    <div id="mensaje3" class="mensaje"></div>
+
+    <div class="botones">
+      <a href="index.html" class="btn btn-volver">← Volver al menú</a>
+      <a href="nivel3.html" class="btn btn-siguiente">Siguiente nivel →</a>
+    </div>
+  </div>
+
+  <script>
+    let puntos = 0;
+    const respondidas = {1: false, 2: false, 3: false};
+
+    function verificar(boton, esCorrecta, numPregunta) {
+      if (respondidas[numPregunta]) return;
+      respondidas[numPregunta] = true;
+
+      const mensaje = document.getElementById('mensaje' + numPregunta);
+      const opciones = boton.parentElement.querySelectorAll('.opcion');
+      opciones.forEach(op => op.disabled = true);
+
+      if (esCorrecta) {
+        boton.classList.add('correcta');
+        mensaje.className = 'mensaje exito';
+        mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
+        puntos += 10;
+      } else {
+        boton.classList.add('incorrecta');
+        mensaje.className = 'mensaje error';
+        mensaje.innerHTML = '❌ Incorrecto. Revisa el tema e intenta en la próxima.';
+        opciones.forEach(op => {
+          if (op.getAttribute('onclick').includes('true')) {
+            op.classList.add('correcta');
+          }
+        });
+      }
+      document.getElementById('puntos').textContent = puntos;
+    }
+  </script>
+</body>
+</html>
