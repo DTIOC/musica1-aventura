@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nivel 6 - La Forja Final</title>
+  <link rel="stylesheet" href="estilo.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+</head>
+<body>
+  <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
+  
+  <div class="nivel-contenido">
+    <h1>🔨 Nivel 6: La Forja Final</h1>
+    <p>Crea una melodía de 4 compases. <strong>Regla:</strong> Después de un salto, la siguiente nota debe ir por grado conjunto en sentido inverso.</p>
+    
+    <div style="margin: 30px 0;">
+      <button class="btn" onclick="agregarNota('C4')">Do</button>
+      <button class="btn" onclick="agregarNota('D4')">Re</button>
+      <button class="btn" onclick="agregarNota('E4')">Mi</button>
+      <button class="btn" onclick="agregarNota('F4')">Fa</button>
+      <button class="btn" onclick="agregarNota('G4')">Sol</button>
+      <button class="btn" onclick="agregarNota('A4')">La</button>
+      <button class="btn" onclick="agregarNota('B4')">Si</button>
+      <button class="btn" onclick="agregarNota('C5')">Do'</button>
+    </div>
+    
+    <div id="pentagrama" style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; min-height: 60px; margin: 20px 0;">
+      Tu melodía aparecerá aquí...
+    </div>
+    
+    <div id="mensaje" class="mensaje"></div>
+    
+    <div class="botones">
+      <button class="btn btn-volver" onclick="reiniciar()">🔄 Reiniciar</button>
+      <a href="index.html" class="btn btn-volver">← Volver al menú</a>
+    </div>
+  </div>
+
+  <script>
+    const notasAltura = { 'C':0, 'D':1, 'E':2, 'F':3, 'G':4, 'A':5, 'B':6 };
+    let melodia = [];
+    let puntos = 0;
+    const synth = new Tone.Synth().toDestination();
+
+    function extraerNota(nota) { return nota.replace(/[0-9]/g, ''); }
+    function extraerOctava(nota) { return parseInt(nota.match(/[0-9]/)[0]); }
+    function alturaMIDI(nota) {
+      return notasAltura[extraerNota(nota)] + (extraerOctava(nota) * 7);
+    }
+
+    function agregarNota(nota) {
+      synth.triggerAttackRelease(nota, "8n");
+      melodia.push(nota);
+      actualizarPentagrama();
+      if (melodia.length >= 3) validarRegla();
+    }
+
+    function actualizarPentagrama() {
+      document.getElementById('pentagrama').innerHTML =
+        melodia.map(n => `<span style="display:inline-block; margin:0 5px; padding:8px; background:#0f3460; border-radius:5px;">${n}</span>`).join(' → ');
+    }
+
+    function validarRegla() {
+      const ultimas3 = melodia.slice(-3).map(alturaMIDI);
+      const salto1 = Math.abs(ultimas3[1] - ultimas3[0]);
+      const salto2 = Math.abs(ultimas3[2] - ultimas3[1]);
+      const direccion1 = ultimas3[1] - ultimas3[0];
+      const direccion2 = ultimas3[2] - ultimas3[1];
+
+      const msg = document.getElementById('mensaje');
+
+      if (salto1 > 1) {
+        if (salto2 === 1 && Math.sign(direccion2) !== Math.sign(direccion1)) {
+          msg.className = 'mensaje exito';
+          msg.innerHTML = "✅ ¡Perfecto! Grado conjunto en sentido inverso. +5 puntos";
+          puntos += 5;
+          document.getElementById('puntos').textContent = puntos;
+        } else {
+          msg.className = 'mensaje error';
+          msg.innerHTML = "❌ Después de un salto, debes ir por grado conjunto en sentido contrario.";
+        }
+      } else {
+        msg.className = 'mensaje exito';
+        msg.innerHTML = "🎵 Grado conjunto válido.";
+      }
+    }
+
+    function reiniciar() {
+      melodia = [];
+      actualizarPentagrama();
+      document.getElementById('mensaje').innerHTML = "";
+    }
+  </script>
+</body>
+</html>
