@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nivel 1 - El Bosque del Eco</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
+  
+  <div class="nivel-contenido">
+    <h1>🌲 Nivel 1: El Bosque del Eco</h1>
+    <p>El bosque está lleno de ruidos caóticos. Debes identificar los elementos de la música.</p>
+    
+    <div class="pregunta">
+      <strong>Pregunta 1:</strong> ¿Cuáles son los tres elementos fundamentales de la música?
+    </div>
+    
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false)">Melodía, Armonía, Ritmo</button>
+      <button class="opcion" onclick="verificar(this, true)">Sonido, Ritmo, Estructura</button>
+      <button class="opcion" onclick="verificar(this, false)">Tono, Timbre, Intensidad</button>
+    </div>
+    
+    <div id="mensaje" class="mensaje"></div>
+    
+    <div class="botones">
+      <a href="index.html" class="btn btn-volver">← Volver al menú</a>
+      <a href="nivel2.html" class="btn btn-siguiente">Siguiente nivel →</a>
+    </div>
+  </div>
+
+  <script>
+    let puntos = 0;
+    
+    function verificar(boton, esCorrecta) {
+      const mensaje = document.getElementById('mensaje');
+      const opciones = document.querySelectorAll('.opcion');
+      
+      // Deshabilitar todos los botones
+      opciones.forEach(op => op.disabled = true);
+      
+      if (esCorrecta) {
+        boton.classList.add('correcta');
+        mensaje.className = 'mensaje exito';
+        mensaje.innerHTML = '✅ ¡Correcto! Has identificado los elementos de la música. +10 puntos';
+        puntos += 10;
+        document.getElementById('puntos').textContent = puntos;
+      } else {
+        boton.classList.add('incorrecta');
+        mensaje.className = 'mensaje error';
+        mensaje.innerHTML = '❌ Incorrecto. La respuesta correcta es: Sonido, Ritmo y Estructura.';
+        // Marcar la correcta
+        opciones.forEach(op => {
+          if (op.onclick.toString().includes('true')) {
+            op.classList.add('correcta');
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
