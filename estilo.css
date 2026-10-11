@@ -190,6 +190,7 @@ h1 {
   font-size: 1.2em;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
+
 /* Pantalla final y diploma */
 .diploma {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
@@ -231,6 +232,7 @@ h1 {
   margin: 20px 0;
   min-height: 150px;
 }
+
 /* Avatar animado */
 .avatar-container {
   position: fixed;
@@ -301,4 +303,9 @@ h1 {
   border-width: 10px 10px 0;
   border-style: solid;
   border-color: white transparent;
+}
+
+/* Nuevo: Clase para ocultar elementos (sendero) */
+.oculto {
+  display: none;
 }
