@@ -15,15 +15,33 @@
     <div class="pregunta">
       <strong>Pregunta 1:</strong> ¿Cuáles son los tres elementos fundamentales de la música?
     </div>
-    
     <div class="opciones">
-      <button class="opcion" onclick="verificar(this, false)">Melodía, Armonía, Ritmo</button>
-      <button class="opcion" onclick="verificar(this, true)">Sonido, Ritmo, Estructura</button>
-      <button class="opcion" onclick="verificar(this, false)">Tono, Timbre, Intensidad</button>
+      <button class="opcion" onclick="verificar(this, false, 1)">Melodía, Armonía, Ritmo</button>
+      <button class="opcion" onclick="verificar(this, true, 1)">Sonido, Ritmo, Estructura</button>
+      <button class="opcion" onclick="verificar(this, false, 1)">Tono, Timbre, Intensidad</button>
     </div>
-    
-    <div id="mensaje" class="mensaje"></div>
-    
+    <div id="mensaje1" class="mensaje"></div>
+
+    <div class="pregunta">
+      <strong>Pregunta 2:</strong> ¿Qué elemento de la música se refiere a la organización del tiempo en patrones regulares?
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, false, 2)">Melodía</button>
+      <button class="opcion" onclick="verificar(this, true, 2)">Ritmo</button>
+      <button class="opcion" onclick="verificar(this, false, 2)">Armonía</button>
+    </div>
+    <div id="mensaje2" class="mensaje"></div>
+
+    <div class="pregunta">
+      <strong>Pregunta 3:</strong> La forma A-B-A en una canción es un ejemplo de:
+    </div>
+    <div class="opciones">
+      <button class="opcion" onclick="verificar(this, true, 3)">Estructura musical</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Ritmo</button>
+      <button class="opcion" onclick="verificar(this, false, 3)">Timbre</button>
+    </div>
+    <div id="mensaje3" class="mensaje"></div>
+
     <div class="botones">
       <a href="index.html" class="btn btn-volver">← Volver al menú</a>
       <a href="nivel2.html" class="btn btn-siguiente">Siguiente nivel →</a>
@@ -31,32 +49,37 @@
   </div>
 
   <script>
-    let puntos = 0;
+    // CAMBIO A: Cargar puntos guardados
+    let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
+    document.getElementById('puntos').textContent = puntos;
+    const respondidas = {1: false, 2: false, 3: false};
     
-    function verificar(boton, esCorrecta) {
-      const mensaje = document.getElementById('mensaje');
-      const opciones = document.querySelectorAll('.opcion');
-      
-      // Deshabilitar todos los botones
+    function verificar(boton, esCorrecta, numPregunta) {
+      if (respondidas[numPregunta]) return;
+      respondidas[numPregunta] = true;
+
+      const mensaje = document.getElementById('mensaje' + numPregunta);
+      const opciones = boton.parentElement.querySelectorAll('.opcion');
       opciones.forEach(op => op.disabled = true);
       
       if (esCorrecta) {
         boton.classList.add('correcta');
         mensaje.className = 'mensaje exito';
-        mensaje.innerHTML = '✅ ¡Correcto! Has identificado los elementos de la música. +10 puntos';
+        mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
         puntos += 10;
-        document.getElementById('puntos').textContent = puntos;
+        // CAMBIO B: Guardar puntos automáticamente
+        localStorage.setItem('puntosMusica1', puntos);
       } else {
         boton.classList.add('incorrecta');
         mensaje.className = 'mensaje error';
-        mensaje.innerHTML = '❌ Incorrecto. La respuesta correcta es: Sonido, Ritmo y Estructura.';
-        // Marcar la correcta
+        mensaje.innerHTML = ' Incorrecto. La respuesta correcta está marcada en verde.';
         opciones.forEach(op => {
-          if (op.onclick.toString().includes('true')) {
+          if (op.getAttribute('onclick').includes('true')) {
             op.classList.add('correcta');
           }
         });
       }
+      document.getElementById('puntos').textContent = puntos;
     }
   </script>
 </body>
