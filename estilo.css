@@ -190,3 +190,44 @@ h1 {
   font-size: 1.2em;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
+/* Pantalla final y diploma */
+.diploma {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #1a1a2e;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  margin: 40px auto;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5);
+}
+
+.diploma h1 {
+  color: #1a1a2e;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.diploma .puntos-final {
+  font-size: 4em;
+  font-weight: bold;
+  color: #e94560;
+  margin: 20px 0;
+}
+
+.diploma .certificado {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  margin-top: 30px;
+  border: 3px solid #1a1a2e;
+}
+
+/* Pentagrama visual */
+#pentagrama-visual {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  min-height: 150px;
+}
