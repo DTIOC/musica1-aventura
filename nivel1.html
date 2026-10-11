@@ -6,8 +6,15 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+  <!-- Contador de puntos -->
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
   
+  <!-- Avatar animado -->
+  <div class="avatar-container">
+    <div class="avatar-bubble" id="avatar-bubble">¡Vamos!</div>
+    <div class="avatar" id="avatar"></div>
+  </div>
+
   <div class="nivel-contenido">
     <h1>🌲 Nivel 1: El Bosque del Eco</h1>
     <p>El bosque está lleno de ruidos caóticos. Debes identificar los elementos de la música.</p>
@@ -60,6 +67,9 @@
 
       const mensaje = document.getElementById('mensaje' + numPregunta);
       const opciones = boton.parentElement.querySelectorAll('.opcion');
+      const avatar = document.getElementById('avatar');
+      const bubble = document.getElementById('avatar-bubble');
+      
       opciones.forEach(op => op.disabled = true);
       
       if (esCorrecta) {
@@ -69,15 +79,34 @@
         puntos += 10;
         // CAMBIO B: Guardar puntos automáticamente
         localStorage.setItem('puntosMusica1', puntos);
+        
+        // Animación de felicidad
+        avatar.classList.add('happy');
+        bubble.textContent = '¡Excelente! 🎉';
+        bubble.classList.add('show');
+        setTimeout(() => {
+          avatar.classList.remove('happy');
+          bubble.classList.remove('show');
+        }, 2000);
+        
       } else {
         boton.classList.add('incorrecta');
         mensaje.className = 'mensaje error';
-        mensaje.innerHTML = ' Incorrecto. La respuesta correcta está marcada en verde.';
+        mensaje.innerHTML = '❌ Incorrecto. La respuesta correcta está marcada en verde.';
         opciones.forEach(op => {
           if (op.getAttribute('onclick').includes('true')) {
             op.classList.add('correcta');
           }
         });
+        
+        // Animación de tristeza/ánimo
+        avatar.classList.add('sad');
+        bubble.textContent = '¡No te rindas! 💪';
+        bubble.classList.add('show');
+        setTimeout(() => {
+          avatar.classList.remove('sad');
+          bubble.classList.remove('show');
+        }, 2000);
       }
       document.getElementById('puntos').textContent = puntos;
     }
