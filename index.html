@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+  <div class="puntos">⭐ Puntos totales: <span id="puntos-totales">0</span></div>
+  
   <div class="contenedor">
     <h1>🎼 El Misterio del Cristal Sonoro</h1>
     <p class="intro">El mundo de Melodía ha perdido su voz. ¡Ayúdanos a recuperar los cristales!</p>
@@ -46,7 +48,19 @@
         <div class="nivel-titulo">La Forja Final</div>
         <div class="nivel-desc">Composición</div>
       </a>
+
+      <a href="nivel7.html" class="nivel">
+        <div class="nivel-numero">🏆</div>
+        <div class="nivel-titulo">Diploma Final</div>
+        <div class="nivel-desc">Ver tu certificado</div>
+      </a>
     </div>
   </div>
+
+  <script>
+    // Cargar puntos guardados
+    let puntosTotales = localStorage.getItem('puntosMusica1') || 0;
+    document.getElementById('puntos-totales').textContent = puntosTotales;
+  </script>
 </body>
 </html>
