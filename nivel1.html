@@ -1,339 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nivel 1 - El Bosque del Eco</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <div class="nivel-contenido">
+    <div class="sendero"></div>
+    
+    <div class="avatar-container" id="avatar-container">
+      <div class="avatar-bubble" id="avatar-bubble">¡Comencemos el camino!</div>
+      <div class="avatar" id="avatar">🧙♂️</div>
+    </div>
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #eee;
-  min-height: 100vh;
-  padding: 20px;
-}
+    <h1>🌲 Nivel 1: El Bosque del Eco</h1>
+    <p>Avanza por el sendero respondiendo correctamente. ¡No podrás pasar al siguiente reto hasta dominar el actual!</p>
+    
+    <div id="bloque-pregunta-1">
+      <div class="pregunta">
+        <strong>Reto 1:</strong> ¿Cuáles son los tres elementos fundamentales de la música?
+      </div>
+      <div class="opciones">
+        <button class="opcion" onclick="verificar(this, false, 1)">Melodía, Armonía, Ritmo</button>
+        <button class="opcion" onclick="verificar(this, true, 1)">Sonido, Ritmo, Estructura</button>
+        <button class="opcion" onclick="verificar(this, false, 1)">Tono, Timbre, Intensidad</button>
+      </div>
+      <div id="mensaje1" class="mensaje"></div>
+    </div>
 
-.contenedor {
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-}
+    <div id="bloque-pregunta-2" class="oculto">
+      <div class="pregunta">
+        <strong>Reto 2:</strong> ¿Qué elemento de la música se refiere a la organización del tiempo en patrones regulares?
+      </div>
+      <div class="opciones">
+        <button class="opcion" onclick="verificar(this, false, 2)">Melodía</button>
+        <button class="opcion" onclick="verificar(this, true, 2)">Ritmo</button>
+        <button class="opcion" onclick="verificar(this, false, 2)">Armonía</button>
+      </div>
+      <div id="mensaje2" class="mensaje"></div>
+    </div>
 
-h1 {
-  font-size: 2.5em;
-  margin-bottom: 20px;
-  color: #fbbf24;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
+    <div id="bloque-pregunta-3" class="oculto">
+      <div class="pregunta">
+        <strong>Reto 3:</strong> La forma A-B-A en una canción es un ejemplo de:
+      </div>
+      <div class="opciones">
+        <button class="opcion" onclick="verificar(this, true, 3)">Estructura musical</button>
+        <button class="opcion" onclick="verificar(this, false, 3)">Ritmo</button>
+        <button class="opcion" onclick="verificar(this, false, 3)">Timbre</button>
+      </div>
+      <div id="mensaje3" class="mensaje"></div>
+    </div>
 
-.intro {
-  font-size: 1.2em;
-  margin-bottom: 40px;
-  color: #cbd5e1;
-}
+    <div id="bloque-final" class="oculto botones">
+      <a href="index.html" class="btn btn-volver">← Volver al mapa</a>
+      <a href="nivel2.html" class="btn btn-siguiente">¡Nivel Completado! Ir al Nivel 2 →</a>
+    </div>
 
-.niveles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-}
+  </div>
 
-.nivel {
-  background: rgba(255,255,255,0.1);
-  border: 2px solid #e94560;
-  border-radius: 15px;
-  padding: 30px 20px;
-  text-decoration: none;
-  color: white;
-  transition: all 0.3s;
-  cursor: pointer;
-}
+  <script>
+    let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
+    document.getElementById('puntos').textContent = puntos;
+    
+    let intentos = {1: 0, 2: 0, 3: 0};
+    const enlaceClassroom = "https://classroom.google.com/";
 
-.nivel:hover {
-  background: rgba(233, 69, 96, 0.3);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(233, 69, 96, 0.4);
-}
+    function moverAvatarA(bloqueId) {
+      const avatarContainer = document.getElementById('avatar-container');
+      const bloque = document.getElementById(bloqueId);
+      const bubble = document.getElementById('avatar-bubble');
+      
+      avatarContainer.classList.add('caminando');
+      bubble.textContent = 'Caminando al siguiente reto... 🚶‍♂️';
+      bubble.classList.add('show');
 
-.nivel-numero {
-  font-size: 3em;
-  font-weight: bold;
-  color: #fbbf24;
-  margin-bottom: 10px;
-}
+      setTimeout(() => {
+        const nuevaPosicion = bloque.offsetTop - 10; 
+        avatarContainer.style.top = nuevaPosicion + 'px';
+        
+        setTimeout(() => {
+          avatarContainer.classList.remove('caminando');
+          bubble.textContent = '¡Llegamos! ¿Listo?';
+          setTimeout(() => bubble.classList.remove('show'), 2000);
+        }, 1500);
+      }, 100);
+    }
 
-.nivel-titulo {
-  font-size: 1.3em;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+    function verificar(boton, esCorrecta, numPregunta) {
+      intentos[numPregunta]++;
+      
+      const mensaje = document.getElementById('mensaje' + numPregunta);
+      const opciones = boton.parentElement.querySelectorAll('.opcion');
+      const avatar = document.getElementById('avatar');
+      const bubble = document.getElementById('avatar-bubble');
 
-.nivel-desc {
-  font-size: 0.9em;
-  color: #94a3b8;
-}
+      if (esCorrecta) {
+        boton.classList.add('correcta');
+        mensaje.className = 'mensaje exito';
+        mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
+        puntos += 10;
+        localStorage.setItem('puntosMusica1', puntos);
 
-/* Estilo para los niveles individuales */
-.nivel-contenido {
-  position: relative; /* Necesario para el sendero y el avatar */
-  max-width: 800px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.05);
-  padding: 40px 40px 40px 90px; /* Más espacio a la izquierda para el camino */
-  border-radius: 15px;
-}
+        avatar.classList.add('happy');
+        bubble.textContent = '¡Excelente! ';
+        bubble.classList.add('show');
+        setTimeout(() => { avatar.classList.remove('happy'); bubble.classList.remove('show'); }, 2000);
 
-/* El Sendero Visual (línea punteada) */
-.sendero {
-  position: absolute;
-  left: 45px;
-  top: 60px;
-  bottom: 40px;
-  width: 4px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #fbbf24 0,
-    #fbbf24 10px,
-    transparent 10px,
-    transparent 20px
-  );
-  border-radius: 2px;
-  opacity: 0.6;
-  z-index: 1;
-}
+        opciones.forEach(op => op.disabled = true);
 
-.pregunta {
-  font-size: 1.3em;
-  margin: 30px 0;
-  padding: 20px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 10px;
-  position: relative;
-  z-index: 2;
-}
+        if (numPregunta < 3) {
+          document.getElementById('bloque-pregunta-' + (numPregunta + 1)).classList.remove('oculto');
+          moverAvatarA('bloque-pregunta-' + (numPregunta + 1));
+        } else {
+          document.getElementById('bloque-final').classList.remove('oculto');
+          moverAvatarA('bloque-final');
+        }
 
-.opciones {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin: 20px 0;
-}
+      } else {
+        boton.classList.add('incorrecta');
+        boton.disabled = true;
 
-.opcion {
-  background: #0f3460;
-  border: 2px solid #e94560;
-  color: white;
-  padding: 15px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1.1em;
-  transition: all 0.3s;
-}
+        if (intentos[numPregunta] >= 2) {
+          mensaje.className = 'mensaje error';
+          mensaje.innerHTML = `⚠️ Parece que este tema necesita un repaso. <br>
+            <a href="${enlaceClassroom}" target="_blank" style="color:#fbbf24; text-decoration:underline; font-weight:bold;">📚 Haz clic aquí para revisar el material en Classroom</a>.<br>
+            <em>(Hemos marcado la respuesta correcta en verde para que puedas aprender y continuar).</em>`;
+          
+          opciones.forEach(op => {
+            op.disabled = true;
+            if (op.getAttribute('onclick').includes('true')) {
+              op.classList.add('correcta');
+            }
+          });
+        } else {
+          mensaje.className = 'mensaje error';
+          mensaje.innerHTML = '❌ Incorrecto. ¡Observa bien y elige otra opción!';
+        }
 
-.opcion:hover {
-  background: #e94560;
-  transform: scale(1.02);
-}
-
-.opcion.correcta {
-  background: #4ade80;
-  border-color: #22c55e;
-}
-
-.opcion.incorrecta {
-  background: #f87171;
-  border-color: #ef4444;
-}
-
-.mensaje {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 10px;
-  font-size: 1.2em;
-  display: none;
-}
-
-.mensaje.exito {
-  background: rgba(74, 222, 128, 0.2);
-  border: 2px solid #4ade80;
-  color: #4ade80;
-  display: block;
-}
-
-.mensaje.error {
-  background: rgba(248, 113, 113, 0.2);
-  border: 2px solid #f87171;
-  color: #f87171;
-  display: block;
-}
-
-.botones {
-  margin-top: 30px;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-}
-
-.btn {
-  background: #e94560;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 8px;
-  font-size: 1em;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.3s;
-}
-
-.btn:hover {
-  background: #ff6b81;
-  transform: translateY(-2px);
-}
-
-.btn-volver {
-  background: #64748b;
-}
-
-.btn-siguiente {
-  background: #4ade80;
-}
-
-.puntos {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: rgba(251, 191, 36, 0.9);
-  color: #1a1a2e;
-  padding: 15px 25px;
-  border-radius: 50px;
-  font-weight: bold;
-  font-size: 1.2em;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  z-index: 100;
-}
-
-/* Pantalla final y diploma */
-.diploma {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: #1a1a2e;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
-  margin: 40px auto;
-  max-width: 600px;
-  box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5);
-}
-
-.diploma h1 {
-  color: #1a1a2e;
-  font-size: 2.5em;
-  margin-bottom: 20px;
-}
-
-.diploma .puntos-final {
-  font-size: 4em;
-  font-weight: bold;
-  color: #e94560;
-  margin: 20px 0;
-}
-
-.diploma .certificado {
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  margin-top: 30px;
-  border: 3px solid #1a1a2e;
-}
-
-/* Pentagrama visual */
-#pentagrama-visual {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 20px 0;
-  min-height: 150px;
-}
-
-/* Avatar animado que camina */
-.avatar-container {
-  position: absolute;
-  left: 10px;
-  top: 60px; /* Posición inicial (al lado de la pregunta 1) */
-  transition: top 1.5s ease-in-out; /* Movimiento suave de caminata */
-  z-index: 10;
-}
-
-.avatar {
-  width: 70px;
-  height: 70px;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="30" r="20" fill="%23fbbf24"/><rect x="30" y="50" width="40" height="40" fill="%23e94560" rx="5"/><circle cx="40" cy="28" r="3" fill="%231a1a2e"/><circle cx="60" cy="28" r="3" fill="%231a1a2e"/><path d="M 42 35 Q 50 40 58 35" stroke="%231a1a2e" stroke-width="2" fill="none"/></svg>') no-repeat center;
-  background-size: contain;
-}
-
-/* Animación de caminar (pequeño rebote) */
-.avatar-container.caminando {
-  animation: caminar 0.4s infinite alternate;
-}
-
-@keyframes caminar {
-  0% { transform: translateY(0) rotate(-5deg); }
-  100% { transform: translateY(-8px) rotate(5deg); }
-}
-
-.avatar.happy {
-  animation: jump 0.6s ease;
-}
-
-@keyframes jump {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-20px) rotate(-10deg); }
-  50% { transform: translateY(-20px) rotate(10deg); }
-  75% { transform: translateY(-10px) rotate(-5deg); }
-}
-
-.avatar.sad {
-  animation: shake 0.5s ease;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-8px) rotate(-5deg); }
-  75% { transform: translateX(8px) rotate(5deg); }
-}
-
-.avatar-bubble {
-  position: absolute;
-  bottom: 75px;
-  left: 0;
-  background: white;
-  color: #1a1a2e;
-  padding: 10px 15px;
-  border-radius: 15px;
-  font-size: 0.85em;
-  width: 160px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-weight: bold;
-}
-
-.avatar-bubble.show {
-  opacity: 1;
-}
-
-.avatar-bubble::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 25px;
-  border-width: 8px 8px 0;
-  border-style: solid;
-  border-color: white transparent;
-}
-
-.oculto {
-  display: none;
-}
+        avatar.classList.add('sad');
+        bubble.textContent = '¡Tú puedes! Revisa bien las opciones 💪';
+        bubble.classList.add('show');
+        setTimeout(() => { avatar.classList.remove('sad'); bubble.classList.remove('show'); }, 2500);
+      }
+      
+      document.getElementById('puntos').textContent = puntos;
+    }
+  </script>
+</body>
+</html>
