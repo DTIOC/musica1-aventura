@@ -75,11 +75,31 @@ h1 {
 
 /* Estilo para los niveles individuales */
 .nivel-contenido {
+  position: relative; /* Necesario para el sendero y el avatar */
   max-width: 800px;
   margin: 0 auto;
   background: rgba(255,255,255,0.05);
-  padding: 40px;
+  padding: 40px 40px 40px 90px; /* Más espacio a la izquierda para el camino */
   border-radius: 15px;
+}
+
+/* El Sendero Visual (línea punteada) */
+.sendero {
+  position: absolute;
+  left: 45px;
+  top: 60px;
+  bottom: 40px;
+  width: 4px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #fbbf24 0,
+    #fbbf24 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  border-radius: 2px;
+  opacity: 0.6;
+  z-index: 1;
 }
 
 .pregunta {
@@ -88,6 +108,8 @@ h1 {
   padding: 20px;
   background: rgba(0,0,0,0.3);
   border-radius: 10px;
+  position: relative;
+  z-index: 2;
 }
 
 .opciones {
@@ -189,6 +211,7 @@ h1 {
   font-weight: bold;
   font-size: 1.2em;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 100;
 }
 
 /* Pantalla final y diploma */
@@ -233,26 +256,30 @@ h1 {
   min-height: 150px;
 }
 
-/* Avatar animado */
+/* Avatar animado que camina */
 .avatar-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 1000;
+  position: absolute;
+  left: 10px;
+  top: 60px; /* Posición inicial (al lado de la pregunta 1) */
+  transition: top 1.5s ease-in-out; /* Movimiento suave de caminata */
+  z-index: 10;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="30" r="20" fill="%23fbbf24"/><rect x="30" y="50" width="40" height="40" fill="%23e94560" rx="5"/><circle cx="40" cy="28" r="3" fill="%231a1a2e"/><circle cx="60" cy="28" r="3" fill="%231a1a2e"/><path d="M 42 35 Q 50 40 58 35" stroke="%231a1a2e" stroke-width="2" fill="none"/></svg>') no-repeat center;
   background-size: contain;
-  transition: transform 0.3s;
-  animation: idle 2s ease-in-out infinite;
 }
 
-@keyframes idle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+/* Animación de caminar (pequeño rebote) */
+.avatar-container.caminando {
+  animation: caminar 0.4s infinite alternate;
+}
+
+@keyframes caminar {
+  0% { transform: translateY(0) rotate(-5deg); }
+  100% { transform: translateY(-8px) rotate(5deg); }
 }
 
 .avatar.happy {
@@ -261,9 +288,9 @@ h1 {
 
 @keyframes jump {
   0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-30px) rotate(-10deg); }
-  50% { transform: translateY(-30px) rotate(10deg); }
-  75% { transform: translateY(-15px) rotate(-5deg); }
+  25% { transform: translateY(-20px) rotate(-10deg); }
+  50% { transform: translateY(-20px) rotate(10deg); }
+  75% { transform: translateY(-10px) rotate(-5deg); }
 }
 
 .avatar.sad {
@@ -272,23 +299,24 @@ h1 {
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-10px) rotate(-5deg); }
-  75% { transform: translateX(10px) rotate(5deg); }
+  25% { transform: translateX(-8px) rotate(-5deg); }
+  75% { transform: translateX(8px) rotate(5deg); }
 }
 
 .avatar-bubble {
   position: absolute;
-  bottom: 90px;
+  bottom: 75px;
   left: 0;
   background: white;
   color: #1a1a2e;
   padding: 10px 15px;
   border-radius: 15px;
-  font-size: 0.9em;
-  max-width: 200px;
+  font-size: 0.85em;
+  width: 160px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   opacity: 0;
   transition: opacity 0.3s;
+  font-weight: bold;
 }
 
 .avatar-bubble.show {
@@ -298,14 +326,13 @@ h1 {
 .avatar-bubble::after {
   content: '';
   position: absolute;
-  bottom: -10px;
-  left: 30px;
-  border-width: 10px 10px 0;
+  bottom: -8px;
+  left: 25px;
+  border-width: 8px 8px 0;
   border-style: solid;
   border-color: white transparent;
 }
 
-/* Nuevo: Clase para ocultar elementos (sendero) */
 .oculto {
   display: none;
 }
