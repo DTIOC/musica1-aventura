@@ -14,11 +14,11 @@
     <div class="sendero"></div>
     <div class="avatar-container" id="avatar-container">
       <div class="avatar-bubble" id="avatar-bubble">¡A forjar la melodía!</div>
-      <div class="avatar" id="avatar">🧙♂️</div>
+      <div class="avatar" id="avatar">🧙‍♂️</div>
     </div>
 
     <h1>🔨 Nivel 6: La Forja Final (Jefe)</h1>
-    <p>Crea una melodía. <strong>Regla de oro:</strong> Después de un salto, la siguiente nota debe ir por grado conjunto en sentido inverso.</p>
+    <p>Crea una melodía de al menos 4 compases. <strong>Regla de oro:</strong> Después de un salto, la siguiente nota debe ir por grado conjunto en sentido inverso.</p>
     
     <div id="bloque-composicion">
       <div class="pregunta" style="text-align:center;">
@@ -37,9 +37,14 @@
       
       <div id="pentagrama-visual"></div>
       <div id="mensaje" class="mensaje"></div>
+      
+      <div id="controles-audio" class="botones oculto" style="margin-top: 20px;">
+        <button class="btn" onclick="escucharMelodia()">🎵 Escuchar melodía completa</button>
+        <button class="btn btn-siguiente" onclick="descargarMelodia()">💾 Descargar melodía (.wav)</button>
+      </div>
     </div>
 
-    <div id="bloque-final" class="oculto botones">
+    <div id="bloque-final" class="oculto botones" style="margin-top: 30px;">
       <a href="index.html" class="btn btn-volver">← Volver al mapa</a>
       <a href="nivel7.html" class="btn btn-siguiente">¡Jefe Derrotado! Ver Diploma 🏆 →</a>
     </div>
@@ -49,7 +54,6 @@
     let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
     document.getElementById('puntos').textContent = puntos;
     
-    // Mover avatar al inicio
     setTimeout(() => {
       const bloque = document.getElementById('bloque-composicion');
       const avatarContainer = document.getElementById('avatar-container');
@@ -69,6 +73,11 @@
       melodia.push(nota);
       dibujarPentagrama();
       if (melodia.length >= 3) validarRegla();
+      
+      if (melodia.length >= 4) {
+        document.getElementById('controles-audio').classList.remove('oculto');
+        document.getElementById('bloque-final').classList.remove('oculto');
+      }
     }
 
     function dibujarPentagrama() {
@@ -109,18 +118,19 @@
         if (salto2 === 1 && Math.sign(direccion2) !== Math.sign(direccion1)) {
           msg.className = 'mensaje exito';
           msg.innerHTML = "✅ ¡Perfecto! Grado conjunto en sentido inverso. +5 puntos";
-          puntos += 5;
-          localStorage.setItem('puntosMusica1', puntos);
-          document.getElementById('puntos').textContent = puntos;
-          
+          if (!localStorage.getItem('nivel6_puntos_dados')) {
+            puntos += 5;
+            localStorage.setItem('puntosMusica1', puntos);
+            localStorage.setItem('nivel6_puntos_dados', 'true');
+            document.getElementById('puntos').textContent = puntos;
+          }
           avatar.classList.add('happy');
-          bubble.textContent = '¡Gran composición! ';
+          bubble.textContent = '¡Gran composición! 🎵';
           bubble.classList.add('show');
           setTimeout(() => { avatar.classList.remove('happy'); bubble.classList.remove('show'); }, 2000);
         } else {
           msg.className = 'mensaje error';
           msg.innerHTML = "❌ Recuerda: después de un salto, debes ir por grado conjunto en sentido contrario.";
-          
           avatar.classList.add('sad');
           bubble.textContent = '¡Cuidado con la regla! ⚠️';
           bubble.classList.add('show');
@@ -130,18 +140,77 @@
         msg.className = 'mensaje exito';
         msg.innerHTML = "🎵 Grado conjunto válido.";
       }
+    }
 
-      // Mostrar botón final si hay al menos 4 notas
-      if (melodia.length >= 4) {
-        document.getElementById('bloque-final').classList.remove('oculto');
+    async function escucharMelodia() {
+      await Tone.start();
+      const now = Tone.now();
+      melodia.forEach((nota, i) => {
+        synth.triggerAttackRelease(nota, "8n", now + i * 0.5);
+      });
+    }
+
+    async function descargarMelodia() {
+      if (melodia.length === 0) return;
+      const duration = (melodia.length * 0.5) + 1;
+      
+      const buffer = await Tone.Offline(({ transport }) => {
+        const offlineSynth = new Tone.Synth().toDestination();
+        let time = 0;
+        melodia.forEach(nota => {
+          offlineSynth.triggerAttackRelease(nota, "8n", time);
+          time += 0.5;
+        });
+        transport.start();
+      }, duration);
+
+      const wavBlob = bufferToWave(buffer, buffer.length);
+      const url = URL.createObjectURL(wavBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mi_melodia_nivel6.wav';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function bufferToWave(abuffer, len) {
+      let numOfChan = abuffer.numberOfChannels,
+          length = len * numOfChan * 2 + 44,
+          buffer = new ArrayBuffer(length),
+          view = new DataView(buffer),
+          channels = [], i, sample, offset = 0, pos = 0;
+      
+      function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
+      function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
+      
+      setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157);
+      setUint32(0x20746d66); setUint32(16); setUint16(1); setUint16(numOfChan);
+      setUint32(abuffer.sampleRate); setUint32(abuffer.sampleRate * 2 * numOfChan);
+      setUint16(numOfChan * 2); setUint16(16); setUint32(0x61746164); setUint32(length - pos - 4);
+      
+      for(i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
+      
+      while(pos < length) {
+        for(i = 0; i < numOfChan; i++) {
+          sample = Math.max(-1, Math.min(1, channels[i][offset]));
+          sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767)|0;
+          view.setInt16(pos, sample, true);
+          pos += 2;
+        }
+        offset++;
       }
+      return new Blob([buffer], {type: "audio/wav"});
     }
 
     function reiniciar() {
       melodia = [];
       document.getElementById('pentagrama-visual').innerHTML = '';
       document.getElementById('mensaje').innerHTML = "";
+      document.getElementById('controles-audio').classList.add('oculto');
       document.getElementById('bloque-final').classList.add('oculto');
+      localStorage.removeItem('nivel6_puntos_dados');
     }
   </script>
   <div style="text-align:center; margin-top:20px;">
