@@ -73,7 +73,6 @@ h1 {
   color: #94a3b8;
 }
 
-/* Estilo para los niveles individuales */
 .nivel-contenido {
   position: relative;
   max-width: 800px;
@@ -83,7 +82,6 @@ h1 {
   border-radius: 15px;
 }
 
-/* El Sendero Visual (línea punteada) */
 .sendero {
   position: absolute;
   left: 45px;
@@ -214,7 +212,6 @@ h1 {
   z-index: 100;
 }
 
-/* Pantalla final y diploma */
 .diploma {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   color: #1a1a2e;
@@ -247,7 +244,6 @@ h1 {
   border: 3px solid #1a1a2e;
 }
 
-/* Pentagrama visual */
 #pentagrama-visual {
   background: white;
   padding: 20px;
@@ -256,7 +252,7 @@ h1 {
   min-height: 150px;
 }
 
-/* Avatar animado que camina */
+/* AVATAR CON EMOJI - Solución simple y confiable */
 .avatar-container {
   position: absolute;
   left: 10px;
@@ -268,12 +264,12 @@ h1 {
 .avatar {
   width: 70px;
   height: 70px;
-  /* AQUÍ ESTÁ EL DIBUJO COMPLETO DEL AVATAR */
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="30" r="20" fill="%23fbbf24"/><rect x="30" y="50" width="40" height="40" fill="%23e94560" rx="5"/><circle cx="40" cy="28" r="3" fill="%231a1a2e"/><circle cx="60" cy="28" r="3" fill="%231a1a2e"/><path d="M 42 35 Q 50 40 58 35" stroke="%231a1a2e" stroke-width="2" fill="none"/></svg>') no-repeat center;
-  background-size: contain;
+  font-size: 60px;
+  line-height: 70px;
+  text-align: center;
+  display: block;
 }
 
-/* Animación de caminar (pequeño rebote) */
 .avatar-container.caminando {
   animation: caminar 0.4s infinite alternate;
 }
