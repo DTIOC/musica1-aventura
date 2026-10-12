@@ -15,7 +15,7 @@
       <div class="avatar" id="avatar">🧙‍♂️</div>
     </div>
 
-    <h1>🌲 Nivel 1: El Bosque del Eco</h1>
+    <h1> Nivel 1: El Bosque del Eco</h1>
     <p>Avanza por el sendero respondiendo correctamente. ¡El mago te acompañará!</p>
     
     <div id="contenedor-preguntas"></div>
@@ -78,6 +78,17 @@
       `;
       contenedor.appendChild(div);
     });
+
+    // NUEVO: Verificar si todas las preguntas ya fueron respondidas al cargar la página
+    const todasRespondidasAlCargar = seleccionadas.every(selId => respondidas.includes(selId));
+    if (todasRespondidasAlCargar) {
+      document.getElementById('bloque-final').classList.remove('oculto');
+      setTimeout(() => {
+        const avatarContainer = document.getElementById('avatar-container');
+        const bloque = document.getElementById('bloque-final');
+        avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
+      }, 500);
+    }
 
     function moverAvatarA(bloqueId) {
       const avatarContainer = document.getElementById('avatar-container');
