@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-  <div class="puntos">⭐ Puntos totales: <span id="puntos-totales">0</span></div>
+  <div class="puntos">⭐ Puntos: <span id="puntos-totales">0</span></div>
   
   <div class="contenedor">
     <h1>🎼 El Misterio del Cristal Sonoro</h1>
@@ -55,10 +55,17 @@
         <div class="nivel-desc">Ver tu certificado</div>
       </a>
     </div>
+
+    <!-- NUEVO: Botón para reiniciar el juego -->
+    <div style="margin-top: 40px; text-align: center;">
+      <button onclick="if(confirm('¿Seguro que quieres reiniciar todo el juego? Se borrarán todos tus puntos.')) { localStorage.clear(); location.reload(); }" 
+              style="background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1em;">
+        🔄 Reiniciar juego completo
+      </button>
+    </div>
   </div>
 
   <script>
-    // Cargar puntos guardados
     let puntosTotales = localStorage.getItem('puntosMusica1') || 0;
     document.getElementById('puntos-totales').textContent = puntosTotales;
   </script>
