@@ -7,47 +7,15 @@
 </head>
 <body>
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
-
   <div class="nivel-contenido">
     <div class="sendero"></div>
     <div class="avatar-container" id="avatar-container">
       <div class="avatar-bubble" id="avatar-bubble">¡Sigue a la serpiente!</div>
-      <div class="avatar" id="avatar">🧙‍️</div>
+      <div class="avatar" id="avatar">🧙‍♂️</div>
     </div>
-
     <h1>🐍 Nivel 5: La Serpiente Laberíntica</h1>
-    <p>Sigue el rastro de la serpiente musical. Identifica si se mueve por <b>grado conjunto</b> (notas vecinas) o por <b>salto</b> (notas lejanas).</p>
-    
-    <div id="bloque-pregunta-1">
-      <div class="pregunta"><strong>Reto 1:</strong> Si una melodía va de <b>Do → Re → Mi → Fa</b>, ¿qué tipo de movimiento es?</div>
-      <div class="opciones">
-        <button class="opcion" onclick="verificar(this, true, 1)">Grado conjunto (notas vecinas)</button>
-        <button class="opcion" onclick="verificar(this, false, 1)">Salto</button>
-        <button class="opcion" onclick="verificar(this, false, 1)">Repetición</button>
-      </div>
-      <div id="mensaje1" class="mensaje"></div>
-    </div>
-
-    <div id="bloque-pregunta-2" class="oculto">
-      <div class="pregunta"><strong>Reto 2:</strong> Si una melodía va de <b>Do → Sol</b>, ¿qué tipo de movimiento es?</div>
-      <div class="opciones">
-        <button class="opcion" onclick="verificar(this, false, 2)">Grado conjunto</button>
-        <button class="opcion" onclick="verificar(this, true, 2)">Salto</button>
-        <button class="opcion" onclick="verificar(this, false, 2)">Unísono</button>
-      </div>
-      <div id="mensaje2" class="mensaje"></div>
-    </div>
-
-    <div id="bloque-pregunta-3" class="oculto">
-      <div class="pregunta"><strong>Reto 3:</strong> Según la regla de oro de la composición: después de un <b>salto ascendente</b>, la siguiente nota debe...</div>
-      <div class="opciones">
-        <button class="opcion" onclick="verificar(this, false, 3)">Seguir subiendo por salto</button>
-        <button class="opcion" onclick="verificar(this, true, 3)">Bajar por grado conjunto (sentido inverso)</button>
-        <button class="opcion" onclick="verificar(this, false, 3)">Repetir la misma nota</button>
-      </div>
-      <div id="mensaje3" class="mensaje"></div>
-    </div>
-
+    <p>Identifica si el movimiento es por grado conjunto o por salto.</p>
+    <div id="contenedor-preguntas"></div>
     <div id="bloque-final" class="oculto botones">
       <a href="index.html" class="btn btn-volver">← Volver al mapa</a>
       <a href="nivel6.html" class="btn btn-siguiente">¡Nivel Completado! Ir al JEFE FINAL →</a>
@@ -55,72 +23,90 @@
   </div>
 
   <script>
+    const nivelActual = 5;
+    const enlaceClassroom = "https://docs.google.com/presentation/d/1QeNvuWxr3uY22ZMqM5e7ix5_cKOWiF06-I0p5a7ZX48/edit?usp=sharing";
+    const banco = [
+      {id: '5_1', p: 'En la melodía Do-Re-Mi, el movimiento es por:', c: 'Grado conjunto', i1: 'Salto', i2: 'Repetición'},
+      {id: '5_2', p: 'En la melodía Do-Sol, el movimiento es por:', c: 'Salto', i1: 'Grado conjunto', i2: 'Unísono'},
+      {id: '5_3', p: 'Si salto de Do a Sol (ascendente), la siguiente nota por grado conjunto en sentido inverso sería:', c: 'Fa', i1: 'La', i2: 'Do'},
+      {id: '5_4', p: '¿Cuál de estas melodías tiene un salto seguido de grado conjunto inverso?', c: 'Do-Sol-Fa', i1: 'Do-Re-Mi', i2: 'Do-Mi-Sol'},
+      {id: '5_5', p: 'El movimiento melódico que va de Mi a Fa es:', c: 'Grado conjunto', i1: 'Salto', i2: 'Repetición'},
+      {id: '5_6', p: 'El movimiento melódico que va de Do a Do\' (octava) es:', c: 'Salto', i1: 'Grado conjunto', i2: 'Unísono'},
+      {id: '5_7', p: '¿Qué intervalo hay entre Re y Fa?', c: 'Tercera', i1: 'Segunda', i2: 'Cuarta'},
+      {id: '5_8', p: '¿Qué intervalo hay entre Sol y Re?', c: 'Quinta', i1: 'Cuarta', i2: 'Sexta'},
+      {id: '5_9', p: 'Una melodía que solo usa notas vecinas se mueve exclusivamente por:', c: 'Grado conjunto', i1: 'Saltos', i2: 'Repeticiones'},
+      {id: '5_10', p: 'Para "aterrizar" suavemente después de un salto melódico, se recomienda usar:', c: 'Grado conjunto en sentido inverso', i1: 'Otro salto', i2: 'Silencio'}
+    ];
+
     let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
     document.getElementById('puntos').textContent = puntos;
-    let intentos = {1: 0, 2: 0, 3: 0};
-    const enlaceClassroom = "https://classroom.google.com/";
+    let seleccionadas = JSON.parse(localStorage.getItem(`n${nivelActual}_sel`) || 'null');
+    if (!seleccionadas) { seleccionadas = [...banco].sort(() => 0.5 - Math.random()).slice(0, 3).map(q => q.id); localStorage.setItem(`n${nivelActual}_sel`, JSON.stringify(seleccionadas)); }
+    let respondidas = JSON.parse(localStorage.getItem(`n${nivelActual}_resp`) || '[]');
+    let intentosSesion = {};
+
+    const contenedor = document.getElementById('contenedor-preguntas');
+    seleccionadas.forEach((id, idx) => {
+      const q = banco.find(x => x.id === id);
+      const yaRespondida = respondidas.includes(id);
+      const opciones = [q.c, q.i1, q.i2].sort(() => 0.5 - Math.random());
+      let opcionesHTML = '';
+      opciones.forEach(op => {
+        const esCorrecta = (op === q.c);
+        const clase = yaRespondida && esCorrecta ? 'opcion correcta' : 'opcion';
+        opcionesHTML += `<button class="${clase}" onclick="verificar(this, ${esCorrecta}, ${idx+1}, '${id}')" ${yaRespondida ? 'disabled' : ''}>${op}</button>`;
+      });
+      const div = document.createElement('div');
+      div.id = `bloque-pregunta-${idx+1}`;
+      div.className = (idx === 0 || yaRespondida) ? '' : 'oculto';
+      div.innerHTML = `<div class="pregunta"><strong>Reto ${idx+1}:</strong> ${q.p}</div><div class="opciones">${opcionesHTML}</div><div id="mensaje${idx+1}" class="mensaje ${yaRespondida ? 'exito' : ''}">${yaRespondida ? '✅ ¡Ya completado!' : ''}</div>`;
+      contenedor.appendChild(div);
+    });
 
     function moverAvatarA(bloqueId) {
       const avatarContainer = document.getElementById('avatar-container');
       const bloque = document.getElementById(bloqueId);
       const bubble = document.getElementById('avatar-bubble');
       avatarContainer.classList.add('caminando');
-      bubble.textContent = 'Caminando al siguiente reto... 🚶‍♂️';
-      bubble.classList.add('show');
+      bubble.textContent = 'Caminando... 🚶‍♂️'; bubble.classList.add('show');
       setTimeout(() => {
-        const nuevaPosicion = bloque.offsetTop - 10; 
-        avatarContainer.style.top = nuevaPosicion + 'px';
-        setTimeout(() => {
-          avatarContainer.classList.remove('caminando');
-          bubble.textContent = '¡Llegamos! ¿Listo?';
-          setTimeout(() => bubble.classList.remove('show'), 2000);
-        }, 1500);
+        avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
+        setTimeout(() => { avatarContainer.classList.remove('caminando'); bubble.textContent = '¡Llegamos!'; setTimeout(() => bubble.classList.remove('show'), 2000); }, 1500);
       }, 100);
     }
 
-    function verificar(boton, esCorrecta, numPregunta) {
-      intentos[numPregunta]++;
-      const mensaje = document.getElementById('mensaje' + numPregunta);
+    function verificar(boton, esCorrecta, numPregunta, idPregunta) {
+      intentosSesion[idPregunta] = (intentosSesion[idPregunta] || 0) + 1;
+      const mensaje = document.getElementById(`mensaje${numPregunta}`);
       const opciones = boton.parentElement.querySelectorAll('.opcion');
       const avatar = document.getElementById('avatar');
       const bubble = document.getElementById('avatar-bubble');
+      const q = banco.find(x => x.id === idPregunta);
 
       if (esCorrecta) {
-        boton.classList.add('correcta');
-        mensaje.className = 'mensaje exito';
-        mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
-        puntos += 10;
-        localStorage.setItem('puntosMusica1', puntos);
-        avatar.classList.add('happy');
-        bubble.textContent = '¡Excelente! 🎉';
-        bubble.classList.add('show');
+        boton.classList.add('correcta'); mensaje.className = 'mensaje exito'; mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
+        if (!respondidas.includes(idPregunta)) { puntos += 10; respondidas.push(idPregunta); localStorage.setItem('puntosMusica1', puntos); localStorage.setItem(`n${nivelActual}_resp`, JSON.stringify(respondidas)); document.getElementById('puntos').textContent = puntos; }
+        avatar.classList.add('happy'); bubble.textContent = '¡Excelente! 🎉'; bubble.classList.add('show');
         setTimeout(() => { avatar.classList.remove('happy'); bubble.classList.remove('show'); }, 2000);
         opciones.forEach(op => op.disabled = true);
-
-        if (numPregunta < 3) {
-          document.getElementById('bloque-pregunta-' + (numPregunta + 1)).classList.remove('oculto');
-          moverAvatarA('bloque-pregunta-' + (numPregunta + 1));
-        } else {
-          document.getElementById('bloque-final').classList.remove('oculto');
-          moverAvatarA('bloque-final');
-        }
+        const todas = seleccionadas.every(selId => respondidas.includes(selId));
+        if (todas) { document.getElementById('bloque-final').classList.remove('oculto'); moverAvatarA('bloque-final'); }
+        else { document.getElementById(`bloque-pregunta-${numPregunta+1}`).classList.remove('oculto'); moverAvatarA(`bloque-pregunta-${numPregunta+1}`); }
       } else {
-        boton.classList.add('incorrecta');
-        boton.disabled = true;
-        if (intentos[numPregunta] >= 2) {
-          mensaje.className = 'mensaje error';
-          mensaje.innerHTML = `️ Parece que este tema necesita un repaso. <br><a href="${enlaceClassroom}" target="_blank" style="color:#fbbf24; text-decoration:underline; font-weight:bold;"> Haz clic aquí para revisar el material en Classroom</a>.<br><em>(Hemos marcado la respuesta correcta en verde para que puedas aprender y continuar).</em>`;
-          opciones.forEach(op => { op.disabled = true; if (op.getAttribute('onclick').includes('true')) op.classList.add('correcta'); });
+        boton.classList.add('incorrecta'); boton.disabled = true;
+        if (intentosSesion[idPregunta] >= 2) {
+          mensaje.className = 'mensaje error'; mensaje.innerHTML = `⚠️ Necesitas un repaso. <br><a href="${enlaceClassroom}" target="_blank" style="color:#fbbf24; text-decoration:underline; font-weight:bold;">📚 Haz clic aquí para revisar el material</a>.`;
+          if (!respondidas.includes(idPregunta)) { respondidas.push(idPregunta); localStorage.setItem(`n${nivelActual}_resp`, JSON.stringify(respondidas)); }
+          opciones.forEach(op => { op.disabled = true; if (op.textContent === q.c) op.classList.add('correcta'); });
+          const todas = seleccionadas.every(selId => respondidas.includes(selId));
+          if (todas) { document.getElementById('bloque-final').classList.remove('oculto'); moverAvatarA('bloque-final'); }
+          else { document.getElementById(`bloque-pregunta-${numPregunta+1}`).classList.remove('oculto'); moverAvatarA(`bloque-pregunta-${numPregunta+1}`); }
         } else {
-          mensaje.className = 'mensaje error';
-          mensaje.innerHTML = '❌ Incorrecto. ¡Observa bien y elige otra opción!';
+          mensaje.className = 'mensaje error'; mensaje.innerHTML = '❌ Incorrecto. ¡Elige otra opción!';
         }
-        avatar.classList.add('sad');
-        bubble.textContent = '¡Tú puedes! Revisa bien las opciones 💪';
-        bubble.classList.add('show');
+        avatar.classList.add('sad'); bubble.textContent = '¡Tú puedes! 💪'; bubble.classList.add('show');
         setTimeout(() => { avatar.classList.remove('sad'); bubble.classList.remove('show'); }, 2500);
       }
-      document.getElementById('puntos').textContent = puntos;
     }
   </script>
 </body>
