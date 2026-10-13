@@ -378,7 +378,7 @@ h1 {
 .fondo-bosque-bg {
   background: 
     linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url('bosque.jpg');
+    url('https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/bosque.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
