@@ -11,9 +11,9 @@
     <div class="sendero"></div>
     <div class="avatar-container" id="avatar-container">
       <div class="avatar-bubble" id="avatar-bubble">¡Sigue a la serpiente!</div>
-      <div class="avatar" id="avatar">🧙‍♂️</div>
+      <div class="avatar" id="avatar">🎵</div>
     </div>
-    <h1>🐍 Nivel 5: La Serpiente Laberíntica</h1>
+    <h1> Nivel 5: La Serpiente Laberíntica</h1>
     <p>Identifica si el movimiento es por grado conjunto o por salto.</p>
     <div id="contenedor-preguntas"></div>
     <div id="bloque-final" class="oculto botones">
@@ -26,26 +26,33 @@
     const nivelActual = 5;
     const enlaceClassroom = "https://docs.google.com/presentation/d/1QeNvuWxr3uY22ZMqM5e7ix5_cKOWiF06-I0p5a7ZX48/edit?usp=sharing";
     const banco = [
-      {id: '5_1', p: 'En la melodía Do-Re-Mi, el movimiento es por:', c: 'Grado conjunto', i1: 'Salto', i2: 'Repetición'},
-      {id: '5_2', p: 'En la melodía Do-Sol, el movimiento es por:', c: 'Salto', i1: 'Grado conjunto', i2: 'Unísono'},
-      {id: '5_3', p: 'Si salto de Do a Sol (ascendente), la siguiente nota por grado conjunto en sentido inverso sería:', c: 'Fa', i1: 'La', i2: 'Do'},
-      {id: '5_4', p: '¿Cuál de estas melodías tiene un salto seguido de grado conjunto inverso?', c: 'Do-Sol-Fa', i1: 'Do-Re-Mi', i2: 'Do-Mi-Sol'},
-      {id: '5_5', p: 'El movimiento melódico que va de Mi a Fa es:', c: 'Grado conjunto', i1: 'Salto', i2: 'Repetición'},
-      {id: '5_6', p: 'El movimiento melódico que va de Do a Do\' (octava) es:', c: 'Salto', i1: 'Grado conjunto', i2: 'Unísono'},
-      {id: '5_7', p: '¿Qué intervalo hay entre Re y Fa?', c: 'Tercera', i1: 'Segunda', i2: 'Cuarta'},
-      {id: '5_8', p: '¿Qué intervalo hay entre Sol y Re?', c: 'Quinta', i1: 'Cuarta', i2: 'Sexta'},
-      {id: '5_9', p: 'Una melodía que solo usa notas vecinas se mueve exclusivamente por:', c: 'Grado conjunto', i1: 'Saltos', i2: 'Repeticiones'},
-      {id: '5_10', p: 'Para "aterrizar" suavemente después de un salto melódico, se recomienda usar:', c: 'Grado conjunto en sentido inverso', i1: 'Otro salto', i2: 'Silencio'}
+      {id: '5_1', p: 'Si el intervalo es de segunda, el movimiento melódico es por:', c: 'Grado conjunto', i1: 'Grado disjunto', i2: 'Unísono'},
+      {id: '5_2', p: 'Si el intervalo es de mayor el de segunda, el movimiento melódico es por:', c: 'Salto', i1: 'Grado conjunto', i2: 'Unísono'},
+      {id: '5_3', p: 'El movimiento melódico de D4 a E4, es por:', c: 'Grado conjunto', i1: 'Salto', i2: 'Segunda'},
+      {id: '5_4', p: 'El movimiento melódico de G4 a C5 se llama:', c: 'Salto', i1: 'Grado conjunto', i2: 'Quinta ascendente'},
+      {id: '5_5', p: 'Un ejemplo de grado conjunto ascendente es:', c: 'De E4 a F4', i1: 'De E4 a D4', i2: 'De G4 a D4'},
+      {id: '5_6', p: 'Un ejemplo de grado conjunto descendente es:', c: 'De E4 a D4', i1: 'De E4 a F4', i2: 'De G4 a D4'},
+      {id: '5_7', p: '¿Cuántos grados conjuntos hay en esta secuencia: D4, E4, F4 y C4?', c: '3', i1: '2', i2: '4'},
+      {id: '5_8', p: '¿Cuántos saltos hay en esta secuencia: G4, E4, F4 y C4?', c: '2', i1: '3', i2: '1'},
+      {id: '5_9', p: 'Todos los intervalos de segunda forman:', c: 'Grado conjunto', i1: 'Salto', i2: 'Unísono'},
+      {id: '5_10', p: 'Todos los intervalos mayores a segunda forman:', c: 'Salto', i1: 'Grado conjunto', i2: 'Unísono'}
     ];
 
     let puntos = parseInt(localStorage.getItem('puntosMusica1') || '0');
     document.getElementById('puntos').textContent = puntos;
+
     let seleccionadas = JSON.parse(localStorage.getItem(`n${nivelActual}_sel`) || 'null');
-    if (!seleccionadas) { seleccionadas = [...banco].sort(() => 0.5 - Math.random()).slice(0, 3).map(q => q.id); localStorage.setItem(`n${nivelActual}_sel`, JSON.stringify(seleccionadas)); }
+    if (!seleccionadas) {
+      seleccionadas = [...banco].sort(() => 0.5 - Math.random()).slice(0, 3).map(q => q.id);
+      localStorage.setItem(`n${nivelActual}_sel`, JSON.stringify(seleccionadas));
+    }
+
     let respondidas = JSON.parse(localStorage.getItem(`n${nivelActual}_resp`) || '[]');
     let intentosSesion = {};
 
     const contenedor = document.getElementById('contenedor-preguntas');
+    let ultimaPreguntaRespondida = 0;
+
     seleccionadas.forEach((id, idx) => {
       const q = banco.find(x => x.id === id);
       const yaRespondida = respondidas.includes(id);
@@ -61,14 +68,30 @@
       div.className = (idx === 0 || yaRespondida) ? '' : 'oculto';
       div.innerHTML = `<div class="pregunta"><strong>Reto ${idx+1}:</strong> ${q.p}</div><div class="opciones">${opcionesHTML}</div><div id="mensaje${idx+1}" class="mensaje ${yaRespondida ? 'exito' : ''}">${yaRespondida ? '✅ ¡Ya completado!' : ''}</div>`;
       contenedor.appendChild(div);
+      
+      if (yaRespondida) ultimaPreguntaRespondida = idx + 1;
     });
+
+    setTimeout(() => {
+      const avatarContainer = document.getElementById('avatar-container');
+      if (ultimaPreguntaRespondida > 0) {
+        const bloque = document.getElementById(`bloque-pregunta-${ultimaPreguntaRespondida}`);
+        if (bloque) avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
+      }
+      const todasRespondidas = seleccionadas.every(selId => respondidas.includes(selId));
+      if (todasRespondidas) {
+        document.getElementById('bloque-final').classList.remove('oculto');
+        const bloqueFinal = document.getElementById('bloque-final');
+        avatarContainer.style.top = (bloqueFinal.offsetTop - 10) + 'px';
+      }
+    }, 300);
 
     function moverAvatarA(bloqueId) {
       const avatarContainer = document.getElementById('avatar-container');
       const bloque = document.getElementById(bloqueId);
       const bubble = document.getElementById('avatar-bubble');
       avatarContainer.classList.add('caminando');
-      bubble.textContent = 'Caminando... 🚶‍♂️'; bubble.classList.add('show');
+      bubble.textContent = 'Caminando... 🚶'; bubble.classList.add('show');
       setTimeout(() => {
         avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
         setTimeout(() => { avatarContainer.classList.remove('caminando'); bubble.textContent = '¡Llegamos!'; setTimeout(() => bubble.classList.remove('show'), 2000); }, 1500);
@@ -85,22 +108,41 @@
 
       if (esCorrecta) {
         boton.classList.add('correcta'); mensaje.className = 'mensaje exito'; mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
-        if (!respondidas.includes(idPregunta)) { puntos += 10; respondidas.push(idPregunta); localStorage.setItem('puntosMusica1', puntos); localStorage.setItem(`n${nivelActual}_resp`, JSON.stringify(respondidas)); document.getElementById('puntos').textContent = puntos; }
+        if (!respondidas.includes(idPregunta)) {
+          puntos += 10;
+          respondidas.push(idPregunta);
+          localStorage.setItem('puntosMusica1', puntos);
+          localStorage.setItem(`n${nivelActual}_resp`, JSON.stringify(respondidas));
+          document.getElementById('puntos').textContent = puntos;
+        }
         avatar.classList.add('happy'); bubble.textContent = '¡Excelente! 🎉'; bubble.classList.add('show');
         setTimeout(() => { avatar.classList.remove('happy'); bubble.classList.remove('show'); }, 2000);
         opciones.forEach(op => op.disabled = true);
         const todas = seleccionadas.every(selId => respondidas.includes(selId));
-        if (todas) { document.getElementById('bloque-final').classList.remove('oculto'); moverAvatarA('bloque-final'); }
-        else { document.getElementById(`bloque-pregunta-${numPregunta+1}`).classList.remove('oculto'); moverAvatarA(`bloque-pregunta-${numPregunta+1}`); }
+        if (todas) {
+          document.getElementById('bloque-final').classList.remove('oculto');
+          moverAvatarA('bloque-final');
+        } else {
+          document.getElementById(`bloque-pregunta-${numPregunta+1}`).classList.remove('oculto');
+          moverAvatarA(`bloque-pregunta-${numPregunta+1}`);
+        }
       } else {
         boton.classList.add('incorrecta'); boton.disabled = true;
         if (intentosSesion[idPregunta] >= 2) {
           mensaje.className = 'mensaje error'; mensaje.innerHTML = `⚠️ Necesitas un repaso. <br><a href="${enlaceClassroom}" target="_blank" style="color:#fbbf24; text-decoration:underline; font-weight:bold;">📚 Haz clic aquí para revisar el material</a>.`;
-          if (!respondidas.includes(idPregunta)) { respondidas.push(idPregunta); localStorage.setItem(`n${nivelActual}_resp`, JSON.stringify(respondidas)); }
+          if (!respondidas.includes(idPregunta)) {
+            respondidas.push(idPregunta);
+            localStorage.setItem(`n${nivelActual}_resp`, JSON.stringify(respondidas));
+          }
           opciones.forEach(op => { op.disabled = true; if (op.textContent === q.c) op.classList.add('correcta'); });
           const todas = seleccionadas.every(selId => respondidas.includes(selId));
-          if (todas) { document.getElementById('bloque-final').classList.remove('oculto'); moverAvatarA('bloque-final'); }
-          else { document.getElementById(`bloque-pregunta-${numPregunta+1}`).classList.remove('oculto'); moverAvatarA(`bloque-pregunta-${numPregunta+1}`); }
+          if (todas) {
+            document.getElementById('bloque-final').classList.remove('oculto');
+            moverAvatarA('bloque-final');
+          } else {
+            document.getElementById(`bloque-pregunta-${numPregunta+1}`).classList.remove('oculto');
+            moverAvatarA(`bloque-pregunta-${numPregunta+1}`);
+          }
         } else {
           mensaje.className = 'mensaje error'; mensaje.innerHTML = '❌ Incorrecto. ¡Elige otra opción!';
         }
