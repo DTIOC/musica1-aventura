@@ -12,11 +12,11 @@
     <div class="sendero"></div>
     <div class="avatar-container" id="avatar-container">
       <div class="avatar-bubble" id="avatar-bubble">¡Comencemos el camino!</div>
-      <div class="avatar" id="avatar">🧙‍♂️</div>
+      <div class="avatar" id="avatar">🎵</div>
     </div>
 
     <h1> Nivel 1: El Bosque del Eco</h1>
-    <p>Avanza por el sendero respondiendo correctamente. ¡El mago te acompañará!</p>
+    <p>Avanza por el sendero respondiendo correctamente. ¡La música te acompañará!</p>
     
     <div id="contenedor-preguntas"></div>
 
@@ -55,6 +55,8 @@
     let intentosSesion = {};
 
     const contenedor = document.getElementById('contenedor-preguntas');
+    let ultimaPreguntaRespondida = 0;
+
     seleccionadas.forEach((id, idx) => {
       const q = banco.find(x => x.id === id);
       const yaRespondida = respondidas.includes(id);
@@ -77,25 +79,32 @@
         <div id="mensaje${idx+1}" class="mensaje ${yaRespondida ? 'exito' : ''}">${yaRespondida ? '✅ ¡Ya completado!' : ''}</div>
       `;
       contenedor.appendChild(div);
+      
+      if (yaRespondida) ultimaPreguntaRespondida = idx + 1;
     });
 
-    // NUEVO: Verificar si todas las preguntas ya fueron respondidas al cargar la página
-    const todasRespondidasAlCargar = seleccionadas.every(selId => respondidas.includes(selId));
-    if (todasRespondidasAlCargar) {
-      document.getElementById('bloque-final').classList.remove('oculto');
-      setTimeout(() => {
-        const avatarContainer = document.getElementById('avatar-container');
-        const bloque = document.getElementById('bloque-final');
-        avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
-      }, 500);
-    }
+    // Mover avatar a la última pregunta respondida al cargar
+    setTimeout(() => {
+      const avatarContainer = document.getElementById('avatar-container');
+      if (ultimaPreguntaRespondida > 0) {
+        const bloque = document.getElementById(`bloque-pregunta-${ultimaPreguntaRespondida}`);
+        if (bloque) avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
+      }
+      
+      const todasRespondidas = seleccionadas.every(selId => respondidas.includes(selId));
+      if (todasRespondidas) {
+        document.getElementById('bloque-final').classList.remove('oculto');
+        const bloqueFinal = document.getElementById('bloque-final');
+        avatarContainer.style.top = (bloqueFinal.offsetTop - 10) + 'px';
+      }
+    }, 300);
 
     function moverAvatarA(bloqueId) {
       const avatarContainer = document.getElementById('avatar-container');
       const bloque = document.getElementById(bloqueId);
       const bubble = document.getElementById('avatar-bubble');
       avatarContainer.classList.add('caminando');
-      bubble.textContent = 'Caminando al siguiente reto... 🚶‍♂️';
+      bubble.textContent = 'Caminando al siguiente reto... ';
       bubble.classList.add('show');
       setTimeout(() => {
         const nuevaPosicion = bloque.offsetTop - 10; 
@@ -173,7 +182,7 @@
         }
 
         avatar.classList.add('sad');
-        bubble.textContent = '¡Tú puedes! Revisa bien las opciones 💪';
+        bubble.textContent = '¡Tú puedes! Revisa bien las opciones ';
         bubble.classList.add('show');
         setTimeout(() => { avatar.classList.remove('sad'); bubble.classList.remove('show'); }, 2500);
       }
