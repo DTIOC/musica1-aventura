@@ -398,39 +398,32 @@ h1 {
 
 /* Nivel 3: Biblioteca (madera y cuero) */
 .fondo-biblioteca-bg {
-  background: linear-gradient(to bottom,
-    #1a0f07 0%,
-    #2c1a0e 25%,
-    #3d2517 50%,
-    #2c1a0e 75%,
-    #1a0f07 100%
-  );
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/biblioteca.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-/* Nivel 4: Abismo (oscuridad total con destellos) */
+/* Nivel 4: Abismo con imagen real */
 .fondo-abismo-bg {
   background: 
-    radial-gradient(1px 1px at 30% 40%, #666, transparent),
-    radial-gradient(1px 1px at 70% 60%, #444, transparent),
-    radial-gradient(2px 2px at 50% 80%, #888, transparent),
-    linear-gradient(to bottom,
-      #000000 0%,
-      #0a0a0a 30%,
-      #1a1a2e 60%,
-      #0a0a0a 80%,
-      #000000 100%
-    );
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/abismo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-/* Nivel 5: Laberinto pantanoso */
+/* Nivel 5: Serpiente con imagen real */
 .fondo-laberinto-bg {
-  background: linear-gradient(to bottom,
-    #001a1a 0%,
-    #003333 25%,
-    #004d40 50%,
-    #003333 75%,
-    #001a1a 100%
-  );
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/serpiente.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Nivel 6: Forja (fuego y lava) */
