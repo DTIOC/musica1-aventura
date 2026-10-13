@@ -4,40 +4,195 @@
   <meta charset="UTF-8">
   <title>Nivel 7 - Diploma Final</title>
   <link rel="stylesheet" href="estilo.css">
+  <style>
+    .diploma-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      padding: 60px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(251, 191, 36, 0.5);
+      text-align: center;
+      position: relative;
+    }
+    
+    .diploma-container::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 15px;
+      pointer-events: none;
+    }
+    
+    .diploma-container h1 {
+      font-size: 3.5em;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .diploma-container .subtitulo {
+      font-size: 1.5em;
+      color: #1a1a2e;
+      margin-bottom: 30px;
+    }
+    
+    .diploma-container .puntos-grandes {
+      font-size: 5em;
+      font-weight: bold;
+      color: #e94560;
+      margin: 30px 0;
+      text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+    }
+    
+    .certificado-box {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      margin: 40px 0;
+      border: 3px solid #1a1a2e;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    
+    .certificado-box h2 {
+      font-size: 2.5em;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+    }
+    
+    .certificado-box p {
+      font-size: 1.2em;
+      color: #333;
+      margin: 15px 0;
+    }
+    
+    .nombre-input {
+      font-size: 1.5em;
+      padding: 15px 30px;
+      border: 2px solid #1a1a2e;
+      border-radius: 10px;
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+      margin: 20px auto;
+      display: block;
+      font-family: 'Georgia', serif;
+    }
+    
+    .certificado-box .fecha {
+      font-size: 1em;
+      color: #666;
+      margin-top: 30px;
+    }
+    
+    .botones-diploma {
+      margin-top: 40px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+    
+    .btn-imprimir {
+      background: #e94560;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-imprimir:hover {
+      background: #ff6b81;
+      transform: translateY(-3px);
+    }
+    
+    .btn-volver {
+      background: #64748b;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 1.2em;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+    
+    .btn-volver:hover {
+      background: #7a8a9e;
+      transform: translateY(-3px);
+    }
+    
+    /* Estilos para impresión */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .diploma-container, .diploma-container * {
+        visibility: visible;
+      }
+      .diploma-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 40px;
+        box-shadow: none;
+      }
+      .botones-diploma {
+        display: none !important;
+      }
+      .puntos {
+        display: none !important;
+      }
+      .nombre-input {
+        border: none;
+        font-size: 2em;
+        font-weight: bold;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="puntos">⭐ Puntos Totales: <span id="puntos">0</span></div>
   
-  <div class="diploma-pergamino" id="diploma">
+  <div class="diploma-container" id="diploma">
     <h1>🏆 ¡Felicidades! 🏆</h1>
+    <div class="subtitulo">Has completado el curso de Música 1</div>
     
-    <div class="certificado-text">
-      <p>Has completado exitosamente</p>
-      <p><strong>El Misterio del Cristal Sonoro</strong></p>
-      <p>y demostrado tu dominio de la música</p>
-    </div>
+    <div class="puntos-grandes" id="puntos-display">0 puntos</div>
     
-    <div class="nombre-estudiante">
-      🎵 Gran Músico 
-    </div>
-    
-    <div class="certificado-text">
-      <p>Puntuación Final:</p>
-      <div class="puntos-final" id="puntos-final">0</div>
-      <p>¡Eres un maestro de la melodía!</p>
-    </div>
-    
-    <div style="margin-top: 40px; font-size: 0.9em; color: #8b7355;">
-      <p> Fecha: <span id="fecha"></span></p>
+    <div class="certificado-box">
+      <h2>Certificado de Logro</h2>
+      <p>Se otorga el presente certificado a:</p>
+      
+      <input type="text" class="nombre-input" id="nombre-estudiante" placeholder="Escribe tu nombre aquí">
+      
+      <p>Por haber completado exitosamente todos los niveles del juego</p>
+      <p style="font-size: 1.4em; font-weight: bold; color: #1a1a2e;">
+        "El Misterio del Cristal Sonoro"
+      </p>
+      
+      <div class="fecha">
+        Fecha: <span id="fecha"></span>
+      </div>
     </div>
   </div>
   
-  <div class="botones" style="text-align: center; margin: 30px;">
-    <button class="btn btn-volver" onclick="window.location.href='index.html'">
-      ← Volver al mapa
+  <div class="botones-diploma">
+    <button class="btn-volver" onclick="window.location.href='index.html'">
+      ← Volver al menú
     </button>
-    <button class="btn btn-siguiente btn-imprimir" onclick="imprimirDiploma()">
-      🖨️ Imprimir Diploma
+    <button class="btn-imprimir" onclick="imprimirDiploma()">
+      🖨️ Imprimir diploma
     </button>
   </div>
 
@@ -45,7 +200,7 @@
     // Obtener puntos totales
     const puntosTotales = parseInt(localStorage.getItem('puntosMusica1') || '0');
     document.getElementById('puntos').textContent = puntosTotales;
-    document.getElementById('puntos-final').textContent = puntosTotales + ' ⭐';
+    document.getElementById('puntos-display').textContent = puntosTotales + ' puntos';
     
     // Fecha actual
     const fecha = new Date();
