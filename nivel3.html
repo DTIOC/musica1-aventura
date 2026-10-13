@@ -6,12 +6,14 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+  <div class="fondo-parallax fondo-biblioteca-bg" id="fondo-parallax"></div>
+  
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
   <div class="nivel-contenido">
     <div class="sendero"></div>
     <div class="avatar-container" id="avatar-container">
       <div class="avatar-bubble" id="avatar-bubble">¡Descifremos los códigos!</div>
-      <div class="avatar" id="avatar">🎵</div>
+      <div class="avatar" id="avatar"></div>
     </div>
     <h1>📚 Nivel 3: La Biblioteca de los Códigos Antiguos</h1>
     <p>Descifra los símbolos musicales para abrir las puertas secretas.</p>
@@ -30,7 +32,7 @@
       {id: '3_2', p: '¿Cómo se llama una nota escrita en la segunda línea del pentagrama con clave de Sol?', c: 'Sol', i1: 'Do', i2: 'Fa'},
       {id: '3_3', p: 'Los reguladores sirven para', c: 'Incrementar o disminuir paulatinamente la intensidad del sonido', i1: 'Incrementar o disminuir paulatinamente la duración del sonido', i2: 'Incrementar o disminuir paulatinamente el tono del sonido'},
       {id: '3_4', p: '¿Cómo se representa al timbre en una escritura musical?', c: 'Con el nombre del instrumento', i1: 'Con el nombre de la clave', i2: 'Con el nombre de las notas'},
-      {id: '3_5', p: 'El nombre de las figura que tienen más VALOR es', c: 'El entero', i1: 'El medio', i2: 'El cuarto'},
+      {id: '3_5', p: 'El nombre de las figuras que tienen más valor es', c: 'El entero', i1: 'El medio', i2: 'El cuarto'},
       {id: '3_6', p: '¿Cómo se indica la intensidad del sonido con símbolos musicales?', c: 'pp, mp, p, mf, f, ff y reguladores', i1: 'Do5, Do6 y Do7', i2: 'Con el nombre del instrumento'},
       {id: '3_7', p: 'El pentagrama, la clave y las figuras son símbolos de:', c: 'Tono', i1: 'Timbre', i2: 'Duración'},
       {id: '3_8', p: 'La cifra de compás y las figuras son símbolos de:', c: 'Duración', i1: 'Tono', i2: 'Intensidad'},
@@ -68,7 +70,6 @@
       div.className = (idx === 0 || yaRespondida) ? '' : 'oculto';
       div.innerHTML = `<div class="pregunta"><strong>Reto ${idx+1}:</strong> ${q.p}</div><div class="opciones">${opcionesHTML}</div><div id="mensaje${idx+1}" class="mensaje ${yaRespondida ? 'exito' : ''}">${yaRespondida ? '✅ ¡Ya completado!' : ''}</div>`;
       contenedor.appendChild(div);
-      
       if (yaRespondida) ultimaPreguntaRespondida = idx + 1;
     });
 
@@ -84,6 +85,7 @@
         const bloqueFinal = document.getElementById('bloque-final');
         avatarContainer.style.top = (bloqueFinal.offsetTop - 10) + 'px';
       }
+      actualizarFondo();
     }, 300);
 
     function moverAvatarA(bloqueId) {
@@ -91,9 +93,10 @@
       const bloque = document.getElementById(bloqueId);
       const bubble = document.getElementById('avatar-bubble');
       avatarContainer.classList.add('caminando');
-      bubble.textContent = 'Caminando... 🚶'; bubble.classList.add('show');
+      bubble.textContent = 'Caminando...'; bubble.classList.add('show');
       setTimeout(() => {
         avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
+        actualizarFondo();
         setTimeout(() => { avatarContainer.classList.remove('caminando'); bubble.textContent = '¡Llegamos!'; setTimeout(() => bubble.classList.remove('show'), 2000); }, 1500);
       }, 100);
     }
@@ -150,6 +153,18 @@
         setTimeout(() => { avatar.classList.remove('sad'); bubble.classList.remove('show'); }, 2500);
       }
     }
+
+    function actualizarFondo() {
+      const avatar = document.getElementById('avatar-container');
+      const fondo = document.getElementById('fondo-parallax');
+      if (avatar && fondo) {
+        const posicionAvatar = avatar.offsetTop;
+        const desplazamiento = -(posicionAvatar * 0.3);
+        fondo.style.transform = `translateY(${desplazamiento}px)`;
+      }
+    }
+    window.addEventListener('load', actualizarFondo);
+    window.addEventListener('resize', actualizarFondo);
   </script>
 </body>
 </html>
