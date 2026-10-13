@@ -11,9 +11,9 @@
     <div class="sendero"></div>
     <div class="avatar-container" id="avatar-container">
       <div class="avatar-bubble" id="avatar-bubble">¡Llegamos a las Torres!</div>
-      <div class="avatar" id="avatar">‍♂️</div>
+      <div class="avatar" id="avatar">🎵</div>
     </div>
-    <h1>🏰 Nivel 2: Las 4 Torres de los Guardianes</h1>
+    <h1> Nivel 2: Las 4 Torres de los Guardianes</h1>
     <p>Debes conocer las propiedades del sonido para pasar a los guardianes.</p>
     <div id="contenedor-preguntas"></div>
     <div id="bloque-final" class="oculto botones">
@@ -68,30 +68,28 @@
       if (yaRespondida) ultimaPreguntaRespondida = idx + 1;
     });
 
-    // FIX: Mover avatar a la última pregunta respondida al cargar
-    if (ultimaPreguntaRespondida > 0) {
+    // Mover avatar a la última pregunta respondida al cargar
+    setTimeout(() => {
       const avatarContainer = document.getElementById('avatar-container');
-      const bloque = document.getElementById(`bloque-pregunta-${ultimaPreguntaRespondida}`);
-      if (bloque) {
-        avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
+      if (ultimaPreguntaRespondida > 0) {
+        const bloque = document.getElementById(`bloque-pregunta-${ultimaPreguntaRespondida}`);
+        if (bloque) avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
       }
-    }
-
-    // FIX: Verificar si todas fueron respondidas
-    const todasRespondidasAlCargar = seleccionadas.every(selId => respondidas.includes(selId));
-    if (todasRespondidasAlCargar) {
-      document.getElementById('bloque-final').classList.remove('oculto');
-      const avatarContainer = document.getElementById('avatar-container');
-      const bloque = document.getElementById('bloque-final');
-      avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
-    }
+      
+      const todasRespondidas = seleccionadas.every(selId => respondidas.includes(selId));
+      if (todasRespondidas) {
+        document.getElementById('bloque-final').classList.remove('oculto');
+        const bloqueFinal = document.getElementById('bloque-final');
+        avatarContainer.style.top = (bloqueFinal.offsetTop - 10) + 'px';
+      }
+    }, 300);
 
     function moverAvatarA(bloqueId) {
       const avatarContainer = document.getElementById('avatar-container');
       const bloque = document.getElementById(bloqueId);
       const bubble = document.getElementById('avatar-bubble');
       avatarContainer.classList.add('caminando');
-      bubble.textContent = 'Caminando... 🚶‍♂️'; bubble.classList.add('show');
+      bubble.textContent = 'Caminando... 🚶'; bubble.classList.add('show');
       setTimeout(() => {
         avatarContainer.style.top = (bloque.offsetTop - 10) + 'px';
         setTimeout(() => { avatarContainer.classList.remove('caminando'); bubble.textContent = '¡Llegamos!'; setTimeout(() => bubble.classList.remove('show'), 2000); }, 1500);
@@ -109,7 +107,6 @@
       if (esCorrecta) {
         boton.classList.add('correcta'); mensaje.className = 'mensaje exito'; mensaje.innerHTML = '✅ ¡Correcto! +10 puntos';
         
-        // FIX: Solo sumar puntos si NO fue respondida antes
         if (!respondidas.includes(idPregunta)) {
           puntos += 10;
           respondidas.push(idPregunta);
@@ -133,7 +130,7 @@
       } else {
         boton.classList.add('incorrecta'); boton.disabled = true;
         if (intentosSesion[idPregunta] >= 2) {
-          mensaje.className = 'mensaje error'; mensaje.innerHTML = `⚠️ Necesitas un repaso. <br><a href="${enlaceClassroom}" target="_blank" style="color:#fbbf24; text-decoration:underline; font-weight:bold;"> Haz clic aquí para revisar el material</a>.`;
+          mensaje.className = 'mensaje error'; mensaje.innerHTML = `⚠️ Necesitas un repaso. <br><a href="${enlaceClassroom}" target="_blank" style="color:#fbbf24; text-decoration:underline; font-weight:bold;">📚 Haz clic aquí para revisar el material</a>.`;
           if (!respondidas.includes(idPregunta)) {
             respondidas.push(idPregunta);
             localStorage.setItem(`n${nivelActual}_resp`, JSON.stringify(respondidas));
