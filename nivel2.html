@@ -10,14 +10,14 @@
   
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
   
-  <div class="nivel-contenido torres-nivel">
+  <!-- Torres FUERA del contenedor para que sean fondo -->
+  <img src="torre1.jpg" alt="Torre 1" class="torre torre-1 visible" id="torre-1">
+  <img src="torre2.jpg" alt="Torre 2" class="torre torre-2" id="torre-2">
+  <img src="torre3.jpg" alt="Torre 3" class="torre torre-3" id="torre-3">
+  <img src="torre4.jpg" alt="Torre 4" class="torre torre-4" id="torre-4">
+  
+  <div class="nivel-contenido">
     <div class="sendero"></div>
-    
-    <!-- Torres decorativas -->
-    <img src="torre1.jpg" alt="Torre 1" class="torre torre-1 visible" id="torre-1">
-    <img src="torre2.jpg" alt="Torre 2" class="torre torre-2" id="torre-2">
-    <img src="torre3.jpg" alt="Torre 3" class="torre torre-3" id="torre-3">
-    <img src="torre4.jpg" alt="Torre 4" class="torre torre-4" id="torre-4">
     
     <div class="avatar-container" id="avatar-container">
       <div class="avatar-bubble" id="avatar-bubble">¡Llegamos a las Torres!</div>
@@ -36,6 +36,7 @@
   </div>
 
   <script>
+    // ... (todo el JavaScript se mantiene igual) ...
     const nivelActual = 2;
     const enlaceClassroom = "https://docs.google.com/presentation/d/1QeNvuWxr3uY22ZMqM5e7ix5_cKOWiF06-I0p5a7ZX48/edit?usp=sharing";
     const banco = [
