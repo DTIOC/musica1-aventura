@@ -453,40 +453,59 @@ h1 {
    ========================================= */
 
 .torre {
-  position: absolute;
-  width: 120px;
+   position: fixed;
+  width: 250px; /* Más grandes (de 120px a 250px) */
   height: auto;
-  opacity: 0;
+  opacity: 0.15; /* Más transparentes para no interferir con el texto */
   transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-  z-index: 5;
+  z-index: 0; /* Detrás del contenido */
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  pointer-events: none; /* Para que no interfieran con los clics */
 }
 
 .torre.visible {
-  opacity: 1;
+  opacity: 0.25; /* Un poco más visibles cuando aparecen */
 }
 
 .torre-1 {
-  left: 20px;
-  top: 80px;
+  left: 5%;
+  top: 10%;
+  transform: rotate(-5deg);
 }
 
 .torre-2 {
-  right: 20px;
-  top: 280px;
+  right: 5%;
+  top: 25%;
+  transform: rotate(5deg);
 }
 
 .torre-3 {
-  left: 20px;
-  top: 480px;
+  left: 3%;
+  top: 50%;
+  transform: rotate(-3deg);
 }
 
 .torre-4 {
-  right: 20px;
-  top: 680px;
+  right: 3%;
+  top: 70%;
+  transform: rotate(5deg);
 }
 
+/* Ajustar el contenedor para que el contenido tenga prioridad */
 .nivel-contenido.torres-nivel {
-  max-width: 900px;
-  padding: 40px 160px 40px 160px;
+  max-width: 800px;
+  padding: 40px 40px 40px 90px;
+  position: relative;
+  z-index: 1; /* Encima de las torres */
+  background: rgba(0, 0, 0, 0.7); /* Más oscuro para contraste */
+  backdrop-filter: blur(3px); /* Más desenfoque */
+}
+
+/* Aumentar el z-index del avatar y sendero */
+.avatar-container {
+  z-index: 2; /* Encima de todo */
+}
+
+.sendero {
+  z-index: 1;
 }
