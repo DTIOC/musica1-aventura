@@ -2,50 +2,62 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title> Diploma Final</title>
+  <title>Nivel 7 - Diploma Final</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-  <div class="nivel-contenido">
-    <div class="diploma">
-      <h1>🎓 ¡Felicidades!</h1>
-      <p style="font-size: 1.3em;">Has completado el curso de Música 1</p>
-      
-      <div class="puntos-final">
-        <span id="puntos-final">0</span> puntos
-      </div>
-      
-      <div class="certificado">
-        <h2>Certificado de Logro</h2>
-        <p style="margin: 20px 0;">Se otorga el presente certificado a:</p>
-        <input type="text" id="nombre-estudiante" placeholder="Escribe tu nombre aquí" 
-               style="font-size: 1.2em; padding: 10px; width: 80%; text-align: center; border: 2px solid #1a1a2e; border-radius: 5px;">
-        <p style="margin: 20px 0;">Por haber completado exitosamente todos los niveles del juego<br>
-        <strong>"El Misterio del Cristal Sonoro"</strong></p>
-        <p style="margin-top: 30px; font-size: 0.9em; color: #666;">
-          Fecha: <span id="fecha"></span>
-        </p>
-      </div>
-      
-      <div class="botones" style="margin-top: 30px;">
-        <button class="btn" onclick="window.print()">️ Imprimir diploma</button>
-        <a href="index.html" class="btn btn-volver">← Volver al menú</a>
-      </div>
+  <div class="puntos">⭐ Puntos Totales: <span id="puntos">0</span></div>
+  
+  <div class="diploma-pergamino" id="diploma">
+    <h1>🏆 ¡Felicidades! 🏆</h1>
+    
+    <div class="certificado-text">
+      <p>Has completado exitosamente</p>
+      <p><strong>El Misterio del Cristal Sonoro</strong></p>
+      <p>y demostrado tu dominio de la música</p>
     </div>
+    
+    <div class="nombre-estudiante">
+      🎵 Gran Músico 
+    </div>
+    
+    <div class="certificado-text">
+      <p>Puntuación Final:</p>
+      <div class="puntos-final" id="puntos-final">0</div>
+      <p>¡Eres un maestro de la melodía!</p>
+    </div>
+    
+    <div style="margin-top: 40px; font-size: 0.9em; color: #8b7355;">
+      <p> Fecha: <span id="fecha"></span></p>
+    </div>
+  </div>
+  
+  <div class="botones" style="text-align: center; margin: 30px;">
+    <button class="btn btn-volver" onclick="window.location.href='index.html'">
+      ← Volver al mapa
+    </button>
+    <button class="btn btn-siguiente btn-imprimir" onclick="imprimirDiploma()">
+      🖨️ Imprimir Diploma
+    </button>
   </div>
 
   <script>
-    // Cargar puntos totales
-    const puntos = localStorage.getItem('puntosMusica1') || 0;
-    document.getElementById('puntos-final').textContent = puntos;
+    // Obtener puntos totales
+    const puntosTotales = parseInt(localStorage.getItem('puntosMusica1') || '0');
+    document.getElementById('puntos').textContent = puntosTotales;
+    document.getElementById('puntos-final').textContent = puntosTotales + ' ⭐';
     
-    // Poner la fecha de hoy automáticamente
+    // Fecha actual
     const fecha = new Date();
     document.getElementById('fecha').textContent = fecha.toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
+    
+    function imprimirDiploma() {
+      window.print();
+    }
   </script>
 </body>
 </html>
