@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+  <div class="fondo-parallax fondo-bosque-bg" id="fondo-parallax"></div>
+  
   <div class="puntos">⭐ Puntos: <span id="puntos">0</span></div>
 
   <div class="nivel-contenido">
@@ -83,7 +85,6 @@
       if (yaRespondida) ultimaPreguntaRespondida = idx + 1;
     });
 
-    // Mover avatar a la última pregunta respondida al cargar
     setTimeout(() => {
       const avatarContainer = document.getElementById('avatar-container');
       if (ultimaPreguntaRespondida > 0) {
@@ -97,6 +98,7 @@
         const bloqueFinal = document.getElementById('bloque-final');
         avatarContainer.style.top = (bloqueFinal.offsetTop - 10) + 'px';
       }
+      actualizarFondo();
     }, 300);
 
     function moverAvatarA(bloqueId) {
@@ -104,11 +106,12 @@
       const bloque = document.getElementById(bloqueId);
       const bubble = document.getElementById('avatar-bubble');
       avatarContainer.classList.add('caminando');
-      bubble.textContent = 'Caminando al siguiente reto... ';
+      bubble.textContent = 'Caminando al siguiente reto...';
       bubble.classList.add('show');
       setTimeout(() => {
         const nuevaPosicion = bloque.offsetTop - 10; 
         avatarContainer.style.top = nuevaPosicion + 'px';
+        actualizarFondo();
         setTimeout(() => {
           avatarContainer.classList.remove('caminando');
           bubble.textContent = '¡Llegamos! ¿Listo?';
@@ -139,7 +142,7 @@
         }
 
         avatar.classList.add('happy');
-        bubble.textContent = '¡Excelente! 🎉';
+        bubble.textContent = '¡Excelente! ';
         bubble.classList.add('show');
         setTimeout(() => { avatar.classList.remove('happy'); bubble.classList.remove('show'); }, 2000);
         opciones.forEach(op => op.disabled = true);
@@ -182,11 +185,23 @@
         }
 
         avatar.classList.add('sad');
-        bubble.textContent = '¡Tú puedes! Revisa bien las opciones ';
+        bubble.textContent = '¡Tú puedes! Revisa bien las opciones';
         bubble.classList.add('show');
         setTimeout(() => { avatar.classList.remove('sad'); bubble.classList.remove('show'); }, 2500);
       }
     }
+
+    function actualizarFondo() {
+      const avatar = document.getElementById('avatar-container');
+      const fondo = document.getElementById('fondo-parallax');
+      if (avatar && fondo) {
+        const posicionAvatar = avatar.offsetTop;
+        const desplazamiento = -(posicionAvatar * 0.3);
+        fondo.style.transform = `translateY(${desplazamiento}px)`;
+      }
+    }
+    window.addEventListener('load', actualizarFondo);
+    window.addEventListener('resize', actualizarFondo);
   </script>
 </body>
 </html>
