@@ -73,15 +73,22 @@ h1 {
   color: #94a3b8;
 }
 
+/* =========================================
+   CONTENIDO DEL NIVEL (unificado)
+   ========================================= */
 .nivel-contenido {
   position: relative;
   max-width: 800px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   padding: 40px 40px 40px 90px;
   border-radius: 15px;
 }
 
+/* =========================================
+   SENDERO Y PREGUNTAS
+   ========================================= */
 .sendero {
   position: absolute;
   left: 45px;
@@ -165,6 +172,9 @@ h1 {
   display: block;
 }
 
+/* =========================================
+   BOTONES
+   ========================================= */
 .botones {
   margin-top: 30px;
   display: flex;
@@ -198,6 +208,9 @@ h1 {
   background: #4ade80;
 }
 
+/* =========================================
+   PUNTUACIÓN
+   ========================================= */
 .puntos {
   position: fixed;
   top: 20px;
@@ -212,6 +225,9 @@ h1 {
   z-index: 100;
 }
 
+/* =========================================
+   DIPLOMA
+   ========================================= */
 .diploma {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   color: #1a1a2e;
@@ -244,6 +260,9 @@ h1 {
   border: 3px solid #1a1a2e;
 }
 
+/* =========================================
+   PENTAGRAMA VISUAL
+   ========================================= */
 #pentagrama-visual {
   background: white;
   padding: 20px;
@@ -252,7 +271,9 @@ h1 {
   min-height: 150px;
 }
 
-/* AVATAR SIMPLE CON EMOJI */
+/* =========================================
+   AVATAR
+   ========================================= */
 .avatar-container {
   position: absolute;
   left: 10px;
@@ -330,6 +351,109 @@ h1 {
   border-color: white transparent;
 }
 
+/* =========================================
+   OCULTO
+   ========================================= */
 .oculto {
   display: none;
+}
+
+/* =========================================
+   FONDOS PARALLAX POR NIVEL
+   ========================================= */
+
+/* Contenedor del fondo parallax */
+.fondo-parallax {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300vh;
+  z-index: -1;
+  transition: transform 1.5s ease-in-out;
+  pointer-events: none;
+}
+
+/* Nivel 1: Bosque (cielo → árboles → suelo) */
+.fondo-bosque-bg {
+  background: 
+    radial-gradient(2px 2px at 20% 10%, white, transparent),
+    radial-gradient(2px 2px at 60% 20%, white, transparent),
+    radial-gradient(1px 1px at 80% 15%, white, transparent),
+    radial-gradient(circle at 85% 8%, #fff9c4 0%, #fff9c4 8%, transparent 9%),
+    linear-gradient(to bottom, 
+      #0a1f0a 0%, 
+      #0d2b0d 15%,
+      #145214 30%,
+      #1a6b1a 45%,
+      #0d4a0d 60%,
+      #062606 80%,
+      #031403 100%
+    );
+  background-size: 100% 100%;
+}
+
+/* Nivel 2: Torres mágicas (cielo nocturno púrpura) */
+.fondo-torres-bg {
+  background: linear-gradient(to bottom,
+    #0a0014 0%,
+    #1a0033 20%,
+    #2d0052 40%,
+    #4a0080 60%,
+    #2d0052 80%,
+    #1a0033 100%
+  );
+}
+
+/* Nivel 3: Biblioteca (madera y cuero) */
+.fondo-biblioteca-bg {
+  background: linear-gradient(to bottom,
+    #1a0f07 0%,
+    #2c1a0e 25%,
+    #3d2517 50%,
+    #2c1a0e 75%,
+    #1a0f07 100%
+  );
+}
+
+/* Nivel 4: Abismo (oscuridad total con destellos) */
+.fondo-abismo-bg {
+  background: 
+    radial-gradient(1px 1px at 30% 40%, #666, transparent),
+    radial-gradient(1px 1px at 70% 60%, #444, transparent),
+    radial-gradient(2px 2px at 50% 80%, #888, transparent),
+    linear-gradient(to bottom,
+      #000000 0%,
+      #0a0a0a 30%,
+      #1a1a2e 60%,
+      #0a0a0a 80%,
+      #000000 100%
+    );
+}
+
+/* Nivel 5: Laberinto pantanoso */
+.fondo-laberinto-bg {
+  background: linear-gradient(to bottom,
+    #001a1a 0%,
+    #003333 25%,
+    #004d40 50%,
+    #003333 75%,
+    #001a1a 100%
+  );
+}
+
+/* Nivel 6: Forja (fuego y lava) */
+.fondo-forja-bg {
+  background: 
+    radial-gradient(circle at 30% 70%, #ff6600 0%, transparent 20%),
+    radial-gradient(circle at 70% 80%, #ff3300 0%, transparent 25%),
+    radial-gradient(circle at 50% 90%, #ffcc00 0%, transparent 15%),
+    linear-gradient(to bottom,
+      #1a0000 0%,
+      #3a0000 30%,
+      #660000 50%,
+      #8b0000 70%,
+      #3a0000 90%,
+      #1a0000 100%
+    );
 }
