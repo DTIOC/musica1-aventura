@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Limpiar juego</title>
+</head>
+<body style="background:#1a1a2e; color:white; font-family:sans-serif; text-align:center; padding:50px;">
+  <h1>🧹 Limpiando el juego...</h1>
+  <p>Espera un momento.</p>
+  <script>
+    localStorage.clear();
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1500);
+  </script>
+</body>
+</html>
