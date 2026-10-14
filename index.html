@@ -16,17 +16,17 @@
     /* =========================================
        IMÁGENES DE FONDO DECORATIVAS
        ========================================= */
-    .fondo-decorativo {
-      position: fixed;
-      width: 300px;
-      height: auto;
-      opacity: 0.35; /* Más visibles (era 0.15) */
-      z-index: 0;
-      pointer-events: none;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      animation: flotarImagen 8s ease-in-out infinite;
-    }
+   .fondo-decorativo {
+  position: fixed;
+  width: 300px;
+  height: auto;
+  opacity: 0.6; /* ← Cambia de 0.35 a 0.6 */
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: flotarImagen 8s ease-in-out infinite;
+}
     
     @keyframes flotarImagen {
       0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -87,15 +87,16 @@
     
     /* Overlay MÁS TRANSPARENTE para ver las imágenes */
     .overlay-oscuro {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(10,10,26,0.4) 0%, rgba(10,10,26,0.7) 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(10,10,26,0.2) 0%, rgba(10,10,26,0.5) 100%);
+  /* ← Cambia de 0.4/0.7 a 0.2/0.5 */
+  z-index: 1;
+  pointer-events: none;
+}
     
     /* =========================================
        CONTENIDO DE LA PORTADA
