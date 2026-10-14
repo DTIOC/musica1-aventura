@@ -10,14 +10,103 @@
       min-height: 100vh;
       padding: 0;
       overflow-x: hidden;
+      position: relative;
     }
     
+    /* =========================================
+       IMÁGENES DE FONDO DECORATIVAS
+       ========================================= */
+    .fondo-decorativo {
+      position: fixed;
+      width: 280px;
+      height: auto;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      animation: flotarImagen 8s ease-in-out infinite;
+    }
+    
+    @keyframes flotarImagen {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+    
+    /* Posiciones estratégicas de cada imagen */
+    .img-bosque {
+      top: 5%;
+      left: 2%;
+      animation-delay: 0s;
+    }
+    
+    .img-torres {
+      top: 15%;
+      right: 2%;
+      animation-delay: 1s;
+    }
+    
+    .img-biblioteca {
+      top: 45%;
+      left: 1%;
+      animation-delay: 2s;
+    }
+    
+    .img-abismo {
+      top: 50%;
+      right: 1%;
+      animation-delay: 3s;
+    }
+    
+    .img-serpiente {
+      bottom: 15%;
+      left: 2%;
+      animation-delay: 4s;
+    }
+    
+    .img-cristal {
+      bottom: 5%;
+      right: 2%;
+      animation-delay: 5s;
+    }
+    
+    /* Etiqueta de cada imagen */
+    .fondo-decorativo::after {
+      content: attr(data-nivel);
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fbbf24;
+      font-size: 0.8em;
+      font-family: 'Georgia', serif;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+      white-space: nowrap;
+    }
+    
+    /* Overlay oscuro para que el texto sea legible */
+    .overlay-oscuro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(10,10,26,0.7) 0%, rgba(10,10,26,0.95) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    /* =========================================
+       CONTENIDO DE LA PORTADA
+       ========================================= */
     .portada-container {
       max-width: 1000px;
       margin: 0 auto;
       padding: 40px 20px;
       text-align: center;
       position: relative;
+      z-index: 2;
     }
     
     .titulo-epico {
@@ -46,13 +135,14 @@
     }
     
     .historia-box {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       border: 3px solid #fbbf24;
       border-radius: 20px;
       padding: 40px;
       margin: 40px 0;
       text-align: left;
       box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3);
+      backdrop-filter: blur(5px);
     }
     
     .historia-box h2 {
@@ -77,11 +167,12 @@
     }
     
     .objetivos-box {
-      background: rgba(233, 69, 96, 0.1);
+      background: rgba(233, 69, 96, 0.15);
       border: 2px solid #e94560;
       border-radius: 15px;
       padding: 30px;
       margin: 40px 0;
+      backdrop-filter: blur(5px);
     }
     
     .objetivos-box h2 {
@@ -101,23 +192,24 @@
       font-size: 1.1em;
       color: #eee;
       padding: 10px 0;
-      padding-left: 30px;
+      padding-left: 35px;
       position: relative;
     }
     
     .objetivos-lista li::before {
       content: '🎵';
       position: absolute;
-      left: 0;
+      left: 5px;
       font-size: 1.2em;
     }
     
     .reglas-box {
-      background: rgba(74, 222, 128, 0.1);
+      background: rgba(74, 222, 128, 0.15);
       border: 2px solid #4ade80;
       border-radius: 15px;
       padding: 30px;
       margin: 40px 0;
+      backdrop-filter: blur(5px);
     }
     
     .reglas-box h2 {
@@ -137,14 +229,14 @@
       font-size: 1.1em;
       color: #eee;
       padding: 10px 0;
-      padding-left: 30px;
+      padding-left: 35px;
       position: relative;
     }
     
     .reglas-lista li::before {
-      content: '';
+      content: '⚡';
       position: absolute;
-      left: 0;
+      left: 5px;
       font-size: 1.2em;
     }
     
@@ -172,32 +264,67 @@
     
     .decoracion-musical {
       position: fixed;
-      font-size: 3em;
-      opacity: 0.1;
+      font-size: 2.5em;
+      opacity: 0.2;
       pointer-events: none;
-      animation: flotar 6s ease-in-out infinite;
+      z-index: 1;
+      animation: flotarNota 6s ease-in-out infinite;
     }
     
-    .decoracion-musical:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
-    .decoracion-musical:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
-    .decoracion-musical:nth-child(3) { bottom: 30%; left: 8%; animation-delay: 2s; }
-    .decoracion-musical:nth-child(4) { bottom: 15%; right: 5%; animation-delay: 3s; }
+    .decoracion-musical:nth-child(1) { top: 8%; left: 30%; animation-delay: 0s; }
+    .decoracion-musical:nth-child(2) { top: 30%; right: 25%; animation-delay: 1s; }
+    .decoracion-musical:nth-child(3) { bottom: 25%; left: 35%; animation-delay: 2s; }
+    .decoracion-musical:nth-child(4) { bottom: 10%; right: 30%; animation-delay: 3s; }
     
-    @keyframes flotar {
+    @keyframes flotarNota {
       0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(10deg); }
+      50% { transform: translateY(-20px) rotate(15deg); }
+    }
+    
+    /* Ajuste para móviles */
+    @media (max-width: 768px) {
+      .fondo-decorativo {
+        width: 150px;
+        opacity: 0.1;
+      }
+      .titulo-epico {
+        font-size: 2.5em;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Decoraciones musicales flotantes -->
+  <!-- IMÁGENES DECORATIVAS DE FONDO -->
+  <img src="https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/bosque.jpg" 
+       alt="Bosque" class="fondo-decorativo img-bosque" data-nivel="Nivel 1: El Bosque">
+  
+  <img src="https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/torre1.jpg" 
+       alt="Torres" class="fondo-decorativo img-torres" data-nivel="Nivel 2: Las Torres">
+  
+  <img src="https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/biblioteca.jpg" 
+       alt="Biblioteca" class="fondo-decorativo img-biblioteca" data-nivel="Nivel 3: Biblioteca">
+  
+  <img src="https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/abismo.jpg" 
+       alt="Abismo" class="fondo-decorativo img-abismo" data-nivel="Nivel 4: El Abismo">
+  
+  <img src="https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/serpiente.jpg" 
+       alt="Serpiente" class="fondo-decorativo img-serpiente" data-nivel="Nivel 5: La Serpiente">
+  
+  <img src="https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/cristal.jpg" 
+       alt="Cristal" class="fondo-decorativo img-cristal" data-nivel="Nivel 6: El Cristal">
+  
+  <!-- Overlay oscuro para legibilidad -->
+  <div class="overlay-oscuro"></div>
+  
+  <!-- Notas musicales flotantes -->
   <div class="decoracion-musical">🎵</div>
   <div class="decoracion-musical">🎼</div>
   <div class="decoracion-musical">🎶</div>
   <div class="decoracion-musical">🎵</div>
   
+  <!-- CONTENIDO PRINCIPAL -->
   <div class="portada-container">
-    <h1 class="titulo-epico">🎼 El Misterio del Cristal Sonoro 🎼</h1>
+    <h1 class="titulo-epico"> El Misterio del Cristal Sonoro 🎼</h1>
     <div class="subtitulo">Una aventura musical épica te espera...</div>
     
     <div class="historia-box">
@@ -245,7 +372,7 @@
       </ul>
     </div>
     
-    <a href="index.html" class="btn-comenzar">
+    <a href="menu.html" class="btn-comenzar">
       🚀 ¡Comenzar la Aventura!
     </a>
     
