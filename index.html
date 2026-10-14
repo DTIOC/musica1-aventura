@@ -18,9 +18,9 @@
        ========================================= */
     .fondo-decorativo {
       position: fixed;
-      width: 280px;
+      width: 300px;
       height: auto;
-      opacity: 0.15;
+      opacity: 0.35; /* Más visibles (era 0.15) */
       z-index: 0;
       pointer-events: none;
       border-radius: 15px;
@@ -78,21 +78,21 @@
       left: 50%;
       transform: translateX(-50%);
       color: #fbbf24;
-      font-size: 0.8em;
+      font-size: 0.9em;
       font-family: 'Georgia', serif;
       font-weight: bold;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
       white-space: nowrap;
     }
     
-    /* Overlay oscuro para que el texto sea legible */
+    /* Overlay MÁS TRANSPARENTE para ver las imágenes */
     .overlay-oscuro {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at center, rgba(10,10,26,0.7) 0%, rgba(10,10,26,0.95) 100%);
+      background: radial-gradient(circle at center, rgba(10,10,26,0.4) 0%, rgba(10,10,26,0.7) 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -197,7 +197,7 @@
     }
     
     .objetivos-lista li::before {
-      content: '🎵';
+      content: '';
       position: absolute;
       left: 5px;
       font-size: 1.2em;
@@ -265,7 +265,7 @@
     .decoracion-musical {
       position: fixed;
       font-size: 2.5em;
-      opacity: 0.2;
+      opacity: 0.3;
       pointer-events: none;
       z-index: 1;
       animation: flotarNota 6s ease-in-out infinite;
@@ -285,7 +285,7 @@
     @media (max-width: 768px) {
       .fondo-decorativo {
         width: 150px;
-        opacity: 0.1;
+        opacity: 0.25;
       }
       .titulo-epico {
         font-size: 2.5em;
@@ -313,18 +313,18 @@
   <img src="https://raw.githubusercontent.com/DTIOC/musica1-aventura/main/cristal.jpg" 
        alt="Cristal" class="fondo-decorativo img-cristal" data-nivel="Nivel 6: El Cristal">
   
-  <!-- Overlay oscuro para legibilidad -->
+  <!-- Overlay MÁS TRANSPARENTE -->
   <div class="overlay-oscuro"></div>
   
   <!-- Notas musicales flotantes -->
-  <div class="decoracion-musical">🎵</div>
+  <div class="decoracion-musical"></div>
   <div class="decoracion-musical">🎼</div>
-  <div class="decoracion-musical">🎶</div>
+  <div class="decoracion-musical"></div>
   <div class="decoracion-musical">🎵</div>
   
   <!-- CONTENIDO PRINCIPAL -->
   <div class="portada-container">
-    <h1 class="titulo-epico"> El Misterio del Cristal Sonoro 🎼</h1>
+    <h1 class="titulo-epico">🎼 El Misterio del Cristal Sonoro 🎼</h1>
     <div class="subtitulo">Una aventura musical épica te espera...</div>
     
     <div class="historia-box">
